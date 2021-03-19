@@ -9,17 +9,17 @@
 	@param parent Element parent du conducteur (0 par defaut)
 	@param scene  QGraphicsScene auquelle appartient le conducteur
 */
-Conducteur::Conducteur(Borne *p1, Borne* p2, Element *parent, QGraphicsScene *scene) : QGraphicsPathItem(parent, scene) {
-	// bornes que le conducteur relie
+Conducteur::Conducteur(Borne *p1, Borne* p2, Element *parent, QGraphicsScene *scene) : QGraphicsPathItem(parent) {
+	// terminals that the conductor connects
 	borne1 = p1;
 	borne2 = p2;
-	// ajout du conducteur a la liste de conducteurs de chacune des deux bornes
+	// add the conductor to the list of conductors for each of the two terminals
 	bool ajout_p1 = borne1 -> addConducteur(this);
 	bool ajout_p2 = borne2 -> addConducteur(this);
 	// en cas d'echec de l'ajout (conducteur deja existant notamment)
 	if (!ajout_p1 || !ajout_p2) return;
 	destroyed = false;
-	// le conducteur est represente par un trait fin
+	// the driver is represented by a fine line
 	QPen t;
 	t.setWidthF(1.0);
 	setPen(t);
@@ -68,7 +68,7 @@ void Conducteur::calculeConducteur() {
 	
 	QPointF depart, arrivee;
 	Borne::Orientation ori_depart, ori_arrivee;
-	// distingue le depart de l'arrivee : le trajet se fait toujours de gauche a droite
+	// distinguishes the departure from the arrival: the trip is always from left to right
 	if (p1.x() <= p2.x()) {
 		depart      = mapFromScene(p1);
 		arrivee     = mapFromScene(p2);
@@ -81,40 +81,40 @@ void Conducteur::calculeConducteur() {
 		ori_arrivee = borne1 -> orientation();
 	}
 	
-	// debut du trajet
+	// Beginning of the trip
 	t.moveTo(depart);
 	if (depart.y() < arrivee.y()) {
-		// trajet descendant
+		// downhide
 		if ((ori_depart == Borne::Nord && (ori_arrivee == Borne::Sud || ori_arrivee == Borne::Ouest)) || (ori_depart == Borne::Est && ori_arrivee == Borne::Ouest)) {
-			// cas « 3 »
+		// case ï¿½ 3 ï¿½
 			qreal ligne_inter_x = (depart.x() + arrivee.x()) / 2.0;
 			t.lineTo(ligne_inter_x, depart.y());
 			t.lineTo(ligne_inter_x, arrivee.y());
 		} else if ((ori_depart == Borne::Sud && (ori_arrivee == Borne::Nord || ori_arrivee == Borne::Est)) || (ori_depart == Borne::Ouest && ori_arrivee == Borne::Est)) {
-			// cas « 4 »
+ // case   4  
 			qreal ligne_inter_y = (depart.y() + arrivee.y()) / 2.0;
 			t.lineTo(depart.x(), ligne_inter_y);
 			t.lineTo(arrivee.x(), ligne_inter_y);
 		} else if ((ori_depart == Borne::Nord || ori_depart == Borne::Est) && (ori_arrivee == Borne::Nord || ori_arrivee == Borne::Est)) {
-			t.lineTo(arrivee.x(), depart.y()); // cas « 2 »
-		} else t.lineTo(depart.x(), arrivee.y()); // cas « 1 »
+			t.lineTo(arrivee.x(), depart.y()); // cas Â« 2 Â»
+		} else t.lineTo(depart.x(), arrivee.y()); // cas Â« 1 Â»
 	} else {
 		// trajet montant
 		if ((ori_depart == Borne::Ouest && (ori_arrivee == Borne::Est || ori_arrivee == Borne::Sud)) || (ori_depart == Borne::Nord && ori_arrivee == Borne::Sud)) {
-			// cas « 3 »
+		// case ï¿½ 3 ï¿½
 			qreal ligne_inter_y = (depart.y() + arrivee.y()) / 2.0;
 			t.lineTo(depart.x(), ligne_inter_y);
 			t.lineTo(arrivee.x(), ligne_inter_y);
 		} else if ((ori_depart == Borne::Est && (ori_arrivee == Borne::Ouest || ori_arrivee == Borne::Nord)) || (ori_depart == Borne::Sud && ori_arrivee == Borne::Nord)) {
-			// cas « 4 »
+		// case ï¿½ 4 ï¿½
 			qreal ligne_inter_x = (depart.x() + arrivee.x()) / 2.0;
 			t.lineTo(ligne_inter_x, depart.y());
 			t.lineTo(ligne_inter_x, arrivee.y());
 		} else if ((ori_depart == Borne::Ouest || ori_depart == Borne::Nord) && (ori_arrivee == Borne::Ouest || ori_arrivee == Borne::Nord)) {
-			t.lineTo(depart.x(), arrivee.y()); // cas « 2 »
-		} else t.lineTo(arrivee.x(), depart.y()); // cas « 1 »
+			t.lineTo(depart.x(), arrivee.y()); // cas Â« 2 Â»
+		} else t.lineTo(arrivee.x(), depart.y()); // cas Â« 1 Â»
 	}
-	// fin du trajet
+ // end of trip
 	t.lineTo(arrivee);
 	setPath(t);
 }
@@ -135,10 +135,10 @@ void Conducteur::paint(QPainter *qp, const QStyleOptionGraphicsItem *qsogi, QWid
 }
 
 /**
-	Indique si deux orientations de Borne sont sur le meme axe (Vertical / Horizontal).
-	@param a La premiere orientation de Borne
-	@param b La seconde orientation de Borne
-	@return Un booleen a true si les deux orientations de bornes sont sur le meme axe
+Indicates whether two Terminal orientations are on the same axis (Vertical / Horizontal).
+@param a Terminal's first orientation
+@param b The second orientation of Terminal
+@return A boolean is true if both terminal orientations are on the same axis
 */
 bool Conducteur::surLeMemeAxe(Borne::Orientation a, Borne::Orientation b) {
 	if ((a == Borne::Nord || a == Borne::Sud) && (b == Borne::Nord || b == Borne::Sud)) return(true);
@@ -147,25 +147,26 @@ bool Conducteur::surLeMemeAxe(Borne::Orientation a, Borne::Orientation b) {
 }
 
 /**
-	Indique si une orientation de borne est horizontale (Est / Ouest).
-	@param a L'orientation de borne
-	@return True si l'orientation de borne est horizontale, false sinon
+	Indicates whether a terminal orientation is horizontal (East / West).
+	@Param has the orientation of terminal
+	@return true if the terminal orientation is horizontal, false otherwise
 */
 bool Conducteur::estHorizontale(Borne::Orientation a) {
 	return(a == Borne::Est || a == Borne::Ouest);
 }
 
 /**
-	Indique si une orientation de borne est verticale (Nord / Sud).
-	@param a L'orientation de borne
-	@return True si l'orientation de borne est verticale, false sinon
+	Indicates whether a terminal orientation is vertical (North / South).
+	@Param has the orientation of terminal
+	@Param has the orientation of terminal
+	@return True if the orientation of terminal is vertical, false otherwise
 */
 bool Conducteur::estVerticale(Borne::Orientation a) {
 	return(a == Borne::Nord || a == Borne::Sud);
 }
 
 /**
-	Methode de preparation a la destruction du conducteur ; le conducteur se detache de ses deux bornes
+Method of preparation to the destruction of the driver;The driver is detached from his two terminals
 */
 void Conducteur::destroy() {
 	destroyed = true;
@@ -182,16 +183,16 @@ bool Conducteur::valideXml(QDomElement &e){
 	// verifie le nom du tag
 	if (e.tagName() != "conducteur") return(false);
 	
-	// verifie la presence des attributs minimaux
-	if (!e.hasAttribute("borne1")) return(false);
-	if (!e.hasAttribute("borne2")) return(false);
+	// check the presence of minimum attributes
+	if (!e.hasAttribute("terminal1")) return(false);
+	if (!e.hasAttribute("terminal2")) return(false);
 	
 	bool conv_ok;
-	// parse l'abscisse
-	e.attribute("borne1").toInt(&conv_ok);
+	// Parse the abscissa
+	e.attribute("terminal1").toInt(&conv_ok);
 	if (!conv_ok) return(false);
 	
-	// parse l'ordonnee
+	// Parse ordinate
 	e.attribute("borne2").toInt(&conv_ok);
 	if (!conv_ok) return(false);
 	return(true);

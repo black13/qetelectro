@@ -9,7 +9,12 @@
 	@Param Parent Element of the driver (0 by default)
 	@Param Scene QGraphicsscene in which the driver belongs
 */
-Conductor::Conductor(Terminal *p1, Terminal* p2, Element *parent, QGraphicsScene *scene) : QGraphicsPathItem(parent) {
+Conductor::Conductor(Terminal *p1, 
+Terminal* p2, 
+Element *parent, 
+QGraphicsScene *scene) 
+: QGraphicsPathItem(parent) 
+{
 	trace_msg("");
 	// terminals that the conductor connects
 	terminal1 = p1;

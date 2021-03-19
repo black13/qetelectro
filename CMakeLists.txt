@@ -45,8 +45,11 @@ qt5_wrap_ui(UI_HEADERS mainwindow.ui)
 # Generate rules for building source files from the resources
 set(SOURCES aboutqet.cpp   
 conducteur.cpp
+conducteur.h
 contacteur.cpp
+contacteur.h
 element.cpp
+element.h
 elementperso.cpp
 main.cpp
 qetapp.cpp
