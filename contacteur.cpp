@@ -1,12 +1,12 @@
 #include "contacteur.h"
 
 /**
-	Constructeur
-	@param parent Le QObject parent de l'element.
-	@param scene  La scene sur laquelle l'element est affiche
+	Constructor
+	@Param parent The parent QObject of the element.
+	@Param scene the scene on which the element is displays
 */
 Contacteur::Contacteur(QGraphicsItem *parent, Schema *scene) : ElementFixe(parent, scene) {
-	// taille et hotspot
+	// size and hotspot
 	setSize(15, 70);
 	setHotspot(QPoint(10, 5));
 	
@@ -16,29 +16,29 @@ Contacteur::Contacteur(QGraphicsItem *parent, Schema *scene) : ElementFixe(paren
 }
 
 /**
-	@return Le nombre actuel de bornes de l'element
+	@return the current number of element terminals
 */
 int Contacteur::nbBornes() const {
 	return(2);
 }
 
 /**
-	Fonction qui effectue le rendu graphique du contacteur
-	@param p Le QPainter a utiliser pour dessiner l'element
-	@param o Les options de dessin
+	Function that makes the graphic rendering of the contactor
+	@param p the qpainter to use to draw the element
+	@param o drawing options
 */
 void Contacteur::paint(QPainter *p, const QStyleOptionGraphicsItem *) {
-	// traits de couleur noire
+// Black color traits
 	QPen t;
 	t.setColor(Qt::black);
 	t.setWidthF(1.0);
 	t.setJoinStyle(Qt::MiterJoin);
 	p -> setPen(t);
 	
-	// une ligne eventuellement antialiasee
+// An eventually antialiasis line
 	p -> drawLine(-5, 19, 0, 40);
 	
-	// deux lignes JAMAIS antialiasees (annulation des renderhints)
+// two lines ever antialiasis (cancellation of renderehints)
 	p -> save();
 	p -> setRenderHint(QPainter::Antialiasing,          false);
 	p -> setRenderHint(QPainter::TextAntialiasing,      false);
@@ -49,7 +49,7 @@ void Contacteur::paint(QPainter *p, const QStyleOptionGraphicsItem *) {
 }
 
 /**
-	@return l'ID du type "Contacteur"
+@return the ID of the type "Contactor"
 */
 QString Contacteur::typeId() {
 	return(QString("0"));

@@ -2,8 +2,8 @@
 	#define DEL_H
 	#include "elementfixe.h"
 	/**
-		Cette classe herite de la classe Element Fixe pour definir une
-		Diode ElectroLuminescente
+	This HERITE class of the fixed class to define a
+	Diode ElectroLuminescente
 	*/
 	class DEL : public ElementFixe {
 		public:

@@ -2,8 +2,8 @@
 	#define CONTACTEUR_H
 	#include "elementfixe.h"
 	/**
-		Cette classe herite de la classe Element Fixe pour definir un
-		contacteur
+	This HERITE class of the fixed class to define a
+	contactor
 	*/
 	class Contacteur : public ElementFixe {
 		public:

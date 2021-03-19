@@ -6,20 +6,20 @@
 	#include "conducteur.h"
 	#define TAILLE_GRILLE 10
 	/**
-		Classe representant un SchemaVue electrique
-		@todo creer une structure capable de retenir les differents composants du SchemaVue : elements, fils, indications eventuelles => revoir les SchemaVues
+	Class representing an electric schemavue
+	@todo create a structure capable of retaining the differences of the schemavue: Elements, son, eventual indications => Review the schemavues
 	*/
 	class SchemaVue : public QGraphicsView {
 		Q_OBJECT
 		public:
-		// constructeurs
+		// builders
 		SchemaVue();
 		SchemaVue(QWidget * = 0);
 		
-		// nouveaux attributs
+		// new attributes
 		Schema *scene;
 		
-		// methodes publiques
+		// public methods
 		bool antialiased() const;
 		void setAntialiasing(bool);
 		bool ouvrir(QString, int * = NULL);
@@ -31,7 +31,7 @@
 		private:
 		bool private_enregistrer(QString &);
 		void initialise();
-		bool antialiasing; // booleen indiquant s'il faut effectuer un antialiasing sur le rendu graphique du SchemaVue
+		bool antialiasing;// booleen indicating whether to perform an antialiasing on the graphic rendering of the schemavue
 		QList<QGraphicsItem *> garbage;
 		
 		void throwToGarbage(QGraphicsItem *);

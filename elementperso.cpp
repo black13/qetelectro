@@ -3,10 +3,10 @@
 ElementPerso::ElementPerso(QString &nom_fichier, QGraphicsItem *qgi, Schema *s, int *etat) : ElementFixe(qgi, s) {
 	nomfichier = nom_fichier;
 	nb_bornes = 0;
-	// pessimisme inside : par defaut, ca foire
+	// pessimism inside: by default, it's fair
 	elmt_etat = -1;
 	
-	// le fichier doit exister
+    // the file must exist
 	QString chemin_elements = "elements/";
 	nomfichier = chemin_elements + nom_fichier;
 	if (!QFileInfo(nomfichier).exists()) {
@@ -15,7 +15,7 @@ ElementPerso::ElementPerso(QString &nom_fichier, QGraphicsItem *qgi, Schema *s, 
 		return;
 	}
 	
-	// le fichier doit etre lisible
+    // the file must be readable
 	QFile fichier(nomfichier);
 	if (!fichier.open(QIODevice::ReadOnly)) {
 		if (etat != NULL) *etat = 2;
@@ -23,7 +23,7 @@ ElementPerso::ElementPerso(QString &nom_fichier, QGraphicsItem *qgi, Schema *s, 
 		return;
 	}
 	
-	// le fichier doit etre un document XML
+   // the file must be an XML document
 	QDomDocument document_xml;
 	if (!document_xml.setContent(&fichier)) {
 		if (etat != NULL) *etat = 3;
@@ -31,7 +31,7 @@ ElementPerso::ElementPerso(QString &nom_fichier, QGraphicsItem *qgi, Schema *s, 
 		return;
 	}
 	
-	// la racine est supposee etre une definition d'element 
+   // the root is assumed to be a definition of element
 	QDomElement racine = document_xml.documentElement();
 	if (racine.tagName() != "definition" || racine.attribute("type") != "element") {
 		if (etat != NULL) *etat = 4;
@@ -39,7 +39,7 @@ ElementPerso::ElementPerso(QString &nom_fichier, QGraphicsItem *qgi, Schema *s, 
 		return;
 	}
 	
-	// ces attributs doivent etre presents et valides
+    // These attributes must be present and valid
 	int w, h, hot_x, hot_y;
 	if (
 		racine.attribute("nom") == QString("") ||\
@@ -53,19 +53,19 @@ ElementPerso::ElementPerso(QString &nom_fichier, QGraphicsItem *qgi, Schema *s, 
 		return;
 	}
 	
-	// on peut d'ores et deja specifier le nom, la taille et le hotspot
+    // we can already specify the name, size and hotspot
 	priv_nom = racine.attribute("nom");
 	setSize(w, h);
 	setHotspot(QPoint(hot_x, hot_y));
 	
-	// la definition est supposee avoir des enfants
+    // Definition is assumed to have children
 	if (racine.firstChild().isNull()) {
 		if (etat != NULL) *etat = 6;
 		elmt_etat = 6;
 		return;
 	}
 	
-	// parcours des enfants de la definition
+    // Course of the Children of Definition
 	int nb_elements_parses = 0;
 	QPainter qp;
 	qp.begin(&dessin);
@@ -87,13 +87,14 @@ ElementPerso::ElementPerso(QString &nom_fichier, QGraphicsItem *qgi, Schema *s, 
 	qp.end();
 	
 	// il doit y avoir au moins un element charge
+    // there must be at least a load element
 	if (!nb_elements_parses) {
 		if (etat != NULL) *etat = 8;
 		elmt_etat = 8;
 		return;
 	}
 	
-	// fermeture du fichier
+    // Closing the file
 	fichier.close();
 	
 	if (etat != NULL) *etat = 0;
@@ -117,25 +118,26 @@ bool ElementPerso::parseElement(QDomElement &e, QPainter &qp, Schema *s) {
 }
 
 bool ElementPerso::parseLigne(QDomElement &e, QPainter &qp) {
-	// verifie la presence et la validite des attributs obligatoires
+    // check the presence and validity of mandatory attributes
 	int x1, y1, x2, y2;
 	if (!attributeIsAnInteger(e, QString("x1"), &x1)) return(false);
 	if (!attributeIsAnInteger(e, QString("y1"), &y1)) return(false);
 	if (!attributeIsAnInteger(e, QString("x2"), &x2)) return(false);
 	if (!attributeIsAnInteger(e, QString("y2"), &y2)) return(false);
-	/// @todo : gerer l'antialiasing (mieux que ca !) et le type de trait
+    /// @todo: managing antialiasing (better than that!) And the type of line
 	setQPainterAntiAliasing(&qp, e.attribute("antialias") == "true");
 	qp.drawLine(x1, y1, x2, y2);
 	return(true);
 }
 
 bool ElementPerso::parseCercle(QDomElement &e, QPainter &qp) {
-	// verifie la presence des attributs obligatoires
+	
+	// check the presence of mandatory attributes
 	int cercle_x, cercle_y, cercle_r;
 	if (!attributeIsAnInteger(e, QString("x"),     &cercle_x)) return(false);
 	if (!attributeIsAnInteger(e, QString("y"),     &cercle_y)) return(false);
 	if (!attributeIsAnInteger(e, QString("rayon"), &cercle_r)) return(false);
-	/// @todo : gerer l'antialiasing (mieux que ca !) et le type de trait
+    /// @todo: managing antialiasing (better than that!) And the type of line
 	setQPainterAntiAliasing(&qp, e.attribute("antialias") == "true");
 	qp.drawEllipse(cercle_x, cercle_y, cercle_r, cercle_r);
 	return(true);
@@ -148,20 +150,22 @@ bool ElementPerso::parsePolygone(QDomElement &e, QPainter &qp) {
 		else break;
 	}
 	if (i < 3) return(false);
-	QPointF points[i-1];
+	//QList<QPointF> points;
+	QPolygonF points;
+	//QPointF points[i-1];
 	for (int j = 1 ; j < i ; ++ j) {
-		points[j-1] = QPointF(
+		points.append(QPointF(
 			e.attribute(QString("x%1").arg(j)).toDouble(),
-			e.attribute(QString("y%1").arg(j)).toDouble()
+			e.attribute(QString("y%1").arg(j)).toDouble())
 		);
 	}
 	setQPainterAntiAliasing(&qp, e.attribute("antialias") == "true");
-	qp.drawPolygon(points, i-1);
+	qp.drawPolygon(points);
 	return(true);
 }
 
 bool ElementPerso::parseBorne(QDomElement &e, Schema *s) {
-	// verifie la presence et la validite des attributs obligatoires
+	// check the presence and validity of mandatory attributes
 	int bornex, borney;
 	Borne::Orientation borneo;
 	if (!attributeIsAnInteger(e, QString("x"), &bornex)) return(false);
@@ -184,9 +188,9 @@ void ElementPerso::setQPainterAntiAliasing(QPainter *qp, bool aa) {
 }
 
 int ElementPerso::attributeIsAnInteger(QDomElement &e, QString nom_attribut, int *entier) {
-	// verifie la presence de l'attribut
+	// check the presence of the attribute
 	if (!e.hasAttribute(nom_attribut)) return(false);
-	// verifie la validite de l'attribut
+	// check the validity of the attribute
 	bool ok;
 	int tmp = e.attribute(nom_attribut).toInt(&ok);
 	if (!ok) return(false);

@@ -2,8 +2,8 @@
 	#define ABOUTQET_H
 	#include <QtGui>
 	/**
-		Cette classe represente la boite de dialogue
-		« A propos de QElectroTech »
+	This class represents the dialog box
+	About QELECTROTECH ï¿½
 	*/
 	class AboutQET : public QDialog {
 		Q_OBJECT

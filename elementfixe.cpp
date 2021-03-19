@@ -1,46 +1,46 @@
 #include "elementfixe.h"
 /**
-	Constructeur
+Manufacturer
 */
 ElementFixe::ElementFixe(QGraphicsItem *parent, Schema *scene) : Element(parent, scene) {
 }
 
 /**
-	@return Le nombre minimal de bornes que l'element peut avoir
+	@return the minimum number of terminals that the element can have
 */
 int ElementFixe::nbBornesMin() const {
 	return(nbBornes());
 }
 
 /**
-	@return Le nombre maximal de bornes que l'element peut avoir
+	@return the maximum number of terminals that the element can have
 */
 int ElementFixe::nbBornesMax() const {
 	return(nbBornes());
 }
 
 /**
-	Methode d'import XML. Cette methode est appelee lors de l'import de contenu XML (coller, import, ouverture de fichier...) afin que l'element puisse gerer lui-meme l'importation de ses bornes. Ici, comme cette classe est caracterisee par un nombre fixe de bornes, l'implementation exige de retrouver exactement ses bornes dans le fichier XML.
-	@param e L'element XML a analyser.
-	@param table_id_adr Reference vers la table de correspondance entre les IDs du fichier XML et les adresses en memoire. Si l'import reussit, il faut y ajouter les bons couples (id, adresse).
-	@return true si l'import a reussi, false sinon
+	XML Import Method.This method is called during the import of XML content (paste, import, file opening ...) so that the element can manage itself the importation of its terminals.Here, as this class is characterized by a fixed number of terminals, the implementation requires to find exactly its terminals in the XML file.
+	@param e XML element to analyze.
+	@Param table_id_adr reference to the correspondence table between the IDS of the XML file and the addresses in memory.If import succeeds, you have to add the good couples (id, address).
+	@return true if the import has managed, false otherwise
 	
 */
 bool ElementFixe::fromXml(QDomElement &e, QHash<int, Borne *> &table_id_adr) {
 	/*
-		les bornes vont maintenant etre recensees pour associer leurs id à leur adresse reelle
-		ce recensement servira lors de la mise en place des fils
+	the terminals will now be listed to associate their ID with their real address
+	This census will serve when setting up
 	*/
 	
 	QList<QDomElement> liste_bornes;
-	// parcours des enfants de l'element
+	// Course of children of the element
 	for (QDomNode enfant = e.firstChild() ; !enfant.isNull() ; enfant = enfant.nextSibling()) {
-		// on s'interesse a l'element XML "bornes"
+	// on s'interesse a l'element XML "bornes"
 		QDomElement bornes = enfant.toElement();
 		if (bornes.isNull() || bornes.tagName() != "bornes") continue;
-		// parcours des enfants de l'element XML "bornes"
+		// COURSES OF CHILDREN OF THE ELEMENT XML "BORNES"
 		for (QDomNode node_borne = bornes.firstChild() ; !node_borne.isNull() ; node_borne = node_borne.nextSibling()) {
-			// on s'interesse a l'element XML "borne"
+		// on s'interesse a l'element XML "borne"
 			QDomElement borne = node_borne.toElement();
 			if (!borne.isNull() && Borne::valideXml(borne)) liste_bornes.append(borne);
 		}
@@ -65,14 +65,14 @@ bool ElementFixe::fromXml(QDomElement &e, QHash<int, Borne *> &table_id_adr) {
 	if (bornes_non_trouvees > 0) {
 		return(false);
 	} else {
-		// verifie que les associations id / adr n'entrent pas en conflit avec table_id_adr
+		// verify that ID / ADR associations do not conflict with table_id_adr
 		foreach(int id_trouve, priv_id_adr.keys()) {
 			if (table_id_adr.contains(id_trouve)) {
-				// cet element possede un id qui est deja reference (= conflit)
+			// This element has an ID that is already referring (= conflict)
 				return(false);
 			}
 		}
-		// copie des associations id / adr
+		// copy associations ID / ADR
 		foreach(int id_trouve, priv_id_adr.keys()) {
 			table_id_adr.insert(id_trouve, priv_id_adr.value(id_trouve));
 		}

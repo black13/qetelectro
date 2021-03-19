@@ -29,12 +29,12 @@
 		private:
 		QGraphicsLineItem *poseur_de_conducteur;
 		bool doit_dessiner_grille;
-		// elements du cartouche
+		// Cartridge elements
 		QString auteur;
 		QDate   date;
 		QString titre;
-		QString folio;       // vraiment necessaire ce truc ?
-		QString nom_fichier; // meme remarque
+		QString folio;// really necessarize this thing?
+		QString nom_fichier;// same comment
 		Element *elementFromXml(QDomElement &e, QHash<int, Borne *> &);
 		
 		private slots:

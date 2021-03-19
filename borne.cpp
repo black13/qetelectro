@@ -4,19 +4,25 @@
 #include "conducteur.h"
 
 /**
-	Fonction privee pour initialiser la borne.
-	@param pf  position du point d'amarrage pour un conducteur
-	@param o   orientation de la borne : Qt::Horizontal ou Qt::Vertical
+	
+Private function to initialize the terminal.
+	
+@param pf Position of the mooring point for a driver
+@param the Orientation of La Borne: Qt :: Horizontal or Qt :: Vertical
+	
 */
 void Borne::initialise(QPointF pf, Borne::Orientation o) {
 	// definition du pount d'amarrage pour un conducteur
+// Definition of the mooring point for a driver
 	amarrage_conducteur  = pf;
 	
 	// definition de l'orientation de la borne (par defaut : sud)
+// Definition of the orientation of the terminal (by default: South)
 	if (o < Borne::Nord || o > Borne::Ouest) sens = Borne::Sud;
 	else sens = o;
 	
 	// calcul de la position du point d'amarrage a l'element
+// Calculation of the position of the mooring point at the element
 	amarrage_elmt = amarrage_conducteur;
 	switch(sens) {
 		case Borne::Nord  : amarrage_elmt += QPointF(0, TAILLE_BORNE);  break;
@@ -27,11 +33,13 @@ void Borne::initialise(QPointF pf, Borne::Orientation o) {
 	}
 	
 	// par defaut : pas de conducteur
+// by default: no driver
 	
 	// QRectF null
 	br = new QRectF();
 	borne_precedente = NULL;
 	// divers
+// divers
 	setAcceptsHoverEvents(true);
 	setAcceptedMouseButtons(Qt::LeftButton);
 	hovered = false;
@@ -44,7 +52,7 @@ void Borne::initialise(QPointF pf, Borne::Orientation o) {
 }
 
 /**
-	Constructeur par defaut
+	Default builder
 */
 Borne::Borne() : QGraphicsItem(0, 0) {
 	initialise(QPointF(0.0, 0.0), Borne::Sud);
@@ -52,11 +60,12 @@ Borne::Borne() : QGraphicsItem(0, 0) {
 }
 
 /**
-	initialise une borne
-	@param pf  position du point d'amarrage pour un conducteur
-	@param o   orientation de la borne : Qt::Horizontal ou Qt::Vertical
-	@param e   Element auquel cette borne appartient
-	@param s   Scene sur laquelle figure cette borne
+	initializes a terminal
+	
+	@param pf Position of the mooring point for a driver
+	@param the Orientation of La Borne: Qt :: Horizontal or Qt :: Vertical
+	@param e element to which this terminal belongs
+	@param s scene on which figure this terminal
 */
 Borne::Borne(QPointF pf, Borne::Orientation o, Element *e, Schema *s) : QGraphicsItem(e, s) {
 	initialise(pf, o);
@@ -64,30 +73,31 @@ Borne::Borne(QPointF pf, Borne::Orientation o, Element *e, Schema *s) : QGraphic
 }
 
 /**
-	initialise une borne
-	@param pf_x Abscisse du point d'amarrage pour un conducteur
-	@param pf_y Ordonnee du point d'amarrage pour un conducteur
-	@param o    orientation de la borne : Qt::Horizontal ou Qt::Vertical
-	@param e    Element auquel cette borne appartient
-	@param s    Scene sur laquelle figure cette borne
+	initializes a terminal
+	@param pf_x abscissa of the mooring point for a driver
+	@param pf_y ordinate from the mooring point for a driver
+	@param the Orientation of La Borne: Qt :: Horizontal or Qt :: Vertical
+	@param e element to which this terminal belongs
+	@param s scene on which figure this terminal
+	@param s scene on which figure this terminal
 */
 Borne::Borne(qreal pf_x, qreal pf_y, Borne::Orientation o, Element *e, Schema *s) : QGraphicsItem(e, s) {
 	initialise(QPointF(pf_x, pf_y), o);
 }
 
 /**
-	Destructeur
+	Destructive
 */
 Borne::~Borne() {
 	delete br;
 }
 
 /**
-	Permet de connaitre l'orientation de la borne. Si le parent de la borne
-	est bien un Element, cette fonction renvoie l'orientation par rapport a
-	la scene de la borne, en tenant compte du fait que l'element ait pu etre
-	pivote. Sinon elle renvoie son sens normal.
-	@return L'orientation actuelle de la Borne.
+	Allows to know the orientation of the terminal.If the parent of the terminal
+	is an element, this function returns the orientation compared to
+	The scene of the terminal, taking into account the fact that the element could be
+	Pivot.Otherwise it returns its normal sense.
+	@return the current orientation of the terminal.
 */
 Borne::Orientation Borne::orientation() const {
 	//true pour une orientation verticale, false pour une orientation horizontale
@@ -108,29 +118,29 @@ Borne::Orientation Borne::orientation() const {
 }
 
 /**
-	Attribue un conducteur a la borne
-	@param f Le conducteur a rattacher a cette borne
+	Assigns a driver at the terminal
+	@param f the driver to attach to this terminal
 */
 bool Borne::addConducteur(Conducteur *f) {
-	// pointeur 0 refuse
+	// pointer 0 refuses
 	if (!f) return(false);
 	
-	// une seule des deux bornes du conducteur doit etre this
+	// only one of the two terminals of the driver must be this
 	Q_ASSERT_X((f -> borne1 == this ^ f -> borne2 == this), "Borne::addConducteur", "Le conducteur devrait etre relie exactement une fois a la borne en cours");
 	
-	// determine l'autre borne a laquelle cette borne va etre relie grace au conducteur
+	// determines the other terminal at which this terminal will be connected thanks to the driver
 	Borne *autre_borne = (f -> borne1 == this) ? f -> borne2 : f -> borne1;
 	
-	// verifie que la borne n'est pas deja reliee avec l'autre borne
+	// check that the terminal is not already connected with the other terminal
 	bool deja_liees = false;
 	foreach (Conducteur* conducteur, liste_conducteurs) {
 		if (conducteur -> borne1 == autre_borne || conducteur -> borne2 == autre_borne) deja_liees = true;
 	}
 	
-	// si les deux bornes sont deja reliees, on refuse d'ajouter le conducteur
+	// if the two terminals are already connected, we refuse to add the driver
 	if (deja_liees) return(false);
 	
-	// sinon on ajoute le conducteur
+	// Otherwise we add the driver
 	liste_conducteurs.append(f);
 	return(true);
 }
@@ -142,10 +152,11 @@ void Borne::removeConducteur(Conducteur *f) {
 }
 
 /**
-	Fonction de dessin des bornes
-	@param p Le QPainter a utiliser
-	@param options Les options de dessin
-	@param widget Le widget sur lequel on dessine
+	Terminal drawing function
+	@param p the qpainter to use
+	@Param Options Drawing options
+	@Param Options Drawing options
+	@param widget the widget on which we draw
 */
 void Borne::paint(QPainter *p, const QStyleOptionGraphicsItem *, QWidget *) {
 	p -> save();
@@ -162,12 +173,12 @@ void Borne::paint(QPainter *p, const QStyleOptionGraphicsItem *, QWidget *) {
 	QPen t;
 	t.setWidthF(1.0);
 	
-	// dessin de la borne en rouge
+	// drawing the terminal in red
 	t.setColor(Qt::red);
 	p -> setPen(t);
 	p -> drawLine(f, e);
 	
-	// dessin du point d'amarrage au conducteur en bleu
+	// Drawing the driver mooring point in blue
 	t.setColor(couleur_hovered);
 	p -> setPen(t);
 	p -> setBrush(couleur_hovered);
@@ -178,7 +189,7 @@ void Borne::paint(QPainter *p, const QStyleOptionGraphicsItem *, QWidget *) {
 }
 
 /**
-	@return Le rectangle (en precision flottante) delimitant la borne et ses alentours.
+	@return The rectangle (in floating precision) delimiting the terminal and its surroundings.
 */
 QRectF Borne::boundingRect() const {
 	if (br -> isNull()) {
@@ -197,7 +208,7 @@ QRectF Borne::boundingRect() const {
 }
 
 /**
-	Gere l'entree de la souris sur la zone de la Borne.
+	Gerts the entrance of the mouse over the area of the terminal.
 */
 void Borne::hoverEnterEvent(QGraphicsSceneHoverEvent *) {
 	hovered = true;
@@ -205,13 +216,13 @@ void Borne::hoverEnterEvent(QGraphicsSceneHoverEvent *) {
 }
 
 /**
-	Gere les mouvements de la souris sur la zone de la Borne.
+	the movements of the mouse over the area of the terminal.
 */
 void Borne::hoverMoveEvent(QGraphicsSceneHoverEvent *) {
 }
 
 /**
-	Gere le fait que la souris sorte de la zone de la Borne.
+	the fact that the mouse kind of the area of the terminal.
 */
 void Borne::hoverLeaveEvent(QGraphicsSceneHoverEvent *) {
 	hovered = false;
@@ -219,8 +230,8 @@ void Borne::hoverLeaveEvent(QGraphicsSceneHoverEvent *) {
 }
 
 /**
-	Gere le fait qu'on enfonce un bouton de la souris sur la Borne.
-	@param e L'evenement souris correspondant
+	the fact that we push a button of the mouse over the terminal.
+	@param e the corresponding mouse event
 */
 void Borne::mousePressEvent(QGraphicsSceneMouseEvent *e) {
 	if (Schema *s = qobject_cast<Schema *>(scene())) {
@@ -233,14 +244,14 @@ void Borne::mousePressEvent(QGraphicsSceneMouseEvent *e) {
 }
 
 /**
-	Gere le fait qu'on bouge la souris sur la Borne.
-	@param e L'evenement souris correspondant
+	Geres the fact that we move the mouse on the terminal.
+	@param e the corresponding mouse event
 */
 void Borne::mouseMoveEvent(QGraphicsSceneMouseEvent *e) {
-	// pendant la pose d'un conducteur, on adopte un autre curseur 
+	// during the installation of a driver, we adopt another cursor
 	setCursor(Qt::CrossCursor);
 	
-	// d'un mouvement a l'autre, il faut retirer l'effet hover de la borne precedente
+	// from one movement to another, it is necessary to remove the hover effect from the preceding terminal
 	if (borne_precedente != NULL) {
 		if (borne_precedente == this) hovered = true;
 		else borne_precedente -> hovered = false;
@@ -248,38 +259,39 @@ void Borne::mouseMoveEvent(QGraphicsSceneMouseEvent *e) {
 		borne_precedente -> update();
 	}
 	
-	// si la scene est un Schema, on actualise le poseur de conducteur
+	// If the scene is a schema, we update the driver's installer
 	if (Schema *s = qobject_cast<Schema *>(scene())) s -> setArrivee(e -> scenePos());
 	
-	// on recupere la liste des qgi sous le pointeur
+	// we recover the list of qgi under the pointer
 	QList<QGraphicsItem *> qgis = scene() -> items(e -> scenePos());
 	
-	/* le qgi le plus haut
-	   = le poseur de conducteur
-	   = le premier element de la liste
-	   = la liste ne peut etre vide
-	   = on prend le deuxieme element de la liste
+	/*  The highest QGI
+	= the driver's installer
+	= the first element of the list
+	= the first element of the list
+	= the list can not be empty
+	= We take the second element of the list
 	*/
-	Q_ASSERT_X(!(qgis.isEmpty()), "Borne::mouseMoveEvent", "La liste d'items ne devrait pas etre vide");
+	Q_ASSERT_X(!(qgis.isEmpty()), "Borne::mouseMoveEvent", "The Items list should not be empty");
 	
-	// s'il y a autre chose que le poseur de conducteur dans la liste
+	// If there is something other than the driver's installer in the list
 	if (qgis.size() > 1) {
-		// on prend le deuxieme element de la liste
+	// we take the second element of the list
 		QGraphicsItem *qgi = qgis.at(1);
 		// si le qgi est une borne...
 		if (Borne *p = qgraphicsitem_cast<Borne *>(qgi)) {
-			// ...on lui applique l'effet hover approprie
+			// ... it is applied to the appropriate Hover effect
 			if (p == this) {
-				// effet si l'on hover sur la borne de depart
+				// effect if one hover on the departure terminal
 				couleur_hovered = couleur_interdit;
 			} else if (p -> parentItem() == parentItem()) {
-				// effet si l'on hover sur une borne du meme appareil
+				// effect if one hover on a terminal of the same device
 				if (((Element *)parentItem()) -> connexionsInternesAcceptees())
 					p -> couleur_hovered = p -> couleur_autorise;
 				else p -> couleur_hovered = p -> couleur_interdit;
 			} else if (p -> nbConducteurs()) {
-				// si la borne a deja un conducteur
-				// verifie que cette borne n'est pas deja reliee a l'autre borne
+				// if the terminal has already a driver
+				// check that this terminal is not already connected to the other terminal
 				bool deja_reliee = false;
 				foreach (Conducteur *f, liste_conducteurs) {
 					if (f -> borne1 == p || f -> borne2 == p) {
@@ -287,10 +299,10 @@ void Borne::mouseMoveEvent(QGraphicsSceneMouseEvent *e) {
 						break;
 					}
 				}
-				// interdit si les bornes sont deja reliees, prudence sinon
+				// forbidden if the terminals are already connected, prudence otherwise
 				p -> couleur_hovered = deja_reliee ? p -> couleur_interdit : p -> couleur_prudence;
 			} else {
-				// effet si on peut poser le conducteur
+				// effect if you can install the driver
 				p -> couleur_hovered = p -> couleur_autorise;
 			}
 			borne_precedente = p;
@@ -301,40 +313,40 @@ void Borne::mouseMoveEvent(QGraphicsSceneMouseEvent *e) {
 }
 
 /**
-	Gere le fait qu'on relache la souris sur la Borne.
-	@param e L'evenement souris correspondant
+	 fact that we relaunch the mouse over the terminal.
+	@param e the corresponding mouse event
 */
 void Borne::mouseReleaseEvent(QGraphicsSceneMouseEvent *e) {
 	setCursor(Qt::ArrowCursor);
 	borne_precedente = NULL;
 	couleur_hovered  = couleur_neutre;
-	// verifie que la scene est bien un Schema
+	// verify that the scene is a schema
 	if (Schema *s = qobject_cast<Schema *>(scene())) {
-		// on arrete de dessiner l'apercu du conducteur
+		// We stop drawing the driver's overview
 		s -> poseConducteur(false);
-		// on recupere l'element sous le pointeur lors du MouseReleaseEvent
-		QGraphicsItem *qgi = s -> itemAt(e -> scenePos());
-		// s'il n'y a rien, on arrete la
+		// we recovered the element under the pointer during the mouseseesevent
+		QGraphicsItem *qgi = s -> itemAt(e -> scenePos()); 
+		// If there is nothing, we stop the
 		if (!qgi) return;
-		// idem si l'element obtenu n'est pas une borne
+		// idem if the element obtained is not a terminal
 		Borne *p = qgraphicsitem_cast<Borne *>(qgi);
 		if (!p) return;
-		// on remet la couleur de hover a sa valeur par defaut
+		// We give the color of Hover to its default value
 		p -> couleur_hovered = p -> couleur_neutre;
-		// idem s'il s'agit de la borne actuelle
+		// idem if it is the current terminal
 		if (p == this) return;
-		// idem s'il s'agit d'une borne de l'element actuel et que l'element n'a pas le droit de relier ses propres bornes
+		// idem if it is a terminal of the current element and that the element does not have the right to connect its own terminals
 		bool cia = ((Element *)parentItem()) -> connexionsInternesAcceptees();
 		if (!cia) foreach(QGraphicsItem *item, parentItem() -> children()) if (item == p) return;
-		// derniere verification : verifier que cette borne n'est pas deja reliee a l'autre borne
+		// last verification: check that this terminal is not already connected to the other terminal
 		foreach (Conducteur *f, liste_conducteurs) if (f -> borne1 == p || f -> borne2 == p) return;
-		// autrement, on pose un conducteur
+		// otherwise, we put a driver
 		new Conducteur(this, (Borne *)qgi, 0, scene());
 	}
 }
 
 /**
-	Met a jour l'eventuel conducteur relie a la Borne.
+	Updates the eventual driver connects to the terminal.
 */
 void Borne::updateConducteur() {
 	if (scene()) {
@@ -343,16 +355,16 @@ void Borne::updateConducteur() {
 }
 
 /**
-	@return La liste des conducteurs lies a cette borne
+	@return the list of drivers related to this terminal
 */
 QList<Conducteur *> Borne::conducteurs() const {
 	return(liste_conducteurs);
 }
 
 /**
-	Methode d'export en XML
-	@param doc Le Document XML a utiliser pour creer l'element XML
-	@return un QDomElement representant cette borne
+	Method of Export of  XML
+	@param doc the XML document to use to create the XML element
+	@return a qdomellation representing this terminal
 */
 QDomElement Borne::toXml(QDomDocument &doc) {
 	QDomElement qdo = doc.createElement("borne");
@@ -363,25 +375,25 @@ QDomElement Borne::toXml(QDomDocument &doc) {
 }
 
 /**
-	Permet de savoir si un element XML represente une borne
-	@param e Le QDomElement a analyser
-	@return true si le QDomElement passe en parametre est une borne, false sinon
+	Lets you know if an XML element represents a terminal
+	@param e the QDomellation to Analyze
+	@return true if the thommelement goes into parametre is a terminal, false otherwise
 */
 bool Borne::valideXml(QDomElement &borne) {
-	// verifie le nom du tag
+	// verify the name of the tag
 	if (borne.tagName() != "borne") return(false);
 	
-	// verifie la presence des attributs minimaux
+	// check the presence of minimum attributes
 	if (!borne.hasAttribute("x")) return(false);
 	if (!borne.hasAttribute("y")) return(false);
 	if (!borne.hasAttribute("orientation")) return(false);
 	
 	bool conv_ok;
-	// parse l'abscisse
+	// Parse the abscissa
 	borne.attribute("x").toDouble(&conv_ok);
 	if (!conv_ok) return(false);
 	
-	// parse l'ordonnee
+	// Parse ordinate
 	borne.attribute("y").toDouble(&conv_ok);
 	if (!conv_ok) return(false);
 	
@@ -394,14 +406,14 @@ bool Borne::valideXml(QDomElement &borne) {
 	if (!conv_ok) return(false);
 	if (borne_or != Borne::Nord && borne_or != Borne::Sud && borne_or != Borne::Est && borne_or != Borne::Ouest) return(false);
 	
-	// a ce stade, la borne est syntaxiquement correcte
+	// At this point, the terminal is syntactically correct
 	return(true);
 }
 
 /**
-	Permet de savoir si un element XML represente cette borne. Attention, l'element XML n'est pas verifie
-	@param e Le QDomElement a analyser
-	@return true si la borne "se reconnait" (memes coordonnes, meme orientation), false sinon
+	Lets you know if an XML element represents this terminal.Attention, the XML element is not verified
+	@param e the QDomellation to Analyze
+	@return true if the terminal "recognizes" (same coordinates, even orientation), FALSE otherwise
 */
 bool Borne::fromXml(QDomElement &borne) {
 	return (

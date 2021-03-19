@@ -3,33 +3,33 @@
 #include "element.h"
 
 /**
-	Constructeur
-	@param p1     Premiere Borne auquel le conducteur est lie
-	@param p2     Seconde Borne auquel le conducteur est lie
-	@param parent Element parent du conducteur (0 par defaut)
-	@param scene  QGraphicsScene auquelle appartient le conducteur
+	Constructor
+	@param p1 first terminal to which the driver is linked
+	@param p2 second terminal to which the driver is linked
+	@Param Parent Element of the driver (0 by default)
+	@Param Scene QGraphicsscene in which the driver belongs
 */
 Conducteur::Conducteur(Borne *p1, Borne* p2, Element *parent, QGraphicsScene *scene) : QGraphicsPathItem(parent, scene) {
-	// bornes que le conducteur relie
+	// terminals that the driver connects
 	borne1 = p1;
 	borne2 = p2;
-	// ajout du conducteur a la liste de conducteurs de chacune des deux bornes
+	// Add the driver to the list of conductors of each of the two terminals
 	bool ajout_p1 = borne1 -> addConducteur(this);
 	bool ajout_p2 = borne2 -> addConducteur(this);
 	// en cas d'echec de l'ajout (conducteur deja existant notamment)
 	if (!ajout_p1 || !ajout_p2) return;
 	destroyed = false;
-	// le conducteur est represente par un trait fin
+	// the driver is represented by a fine line
 	QPen t;
 	t.setWidthF(1.0);
 	setPen(t);
-	// calcul du rendu du conducteur
+	// Calculation of driver rendering
 	calculeConducteur();
 }
 
 /**
-	Met a jour la representation graphique du conducteur.
-	@param rect Rectangle a mettre a jour
+	Updates the graphical representation of the driver.
+	@param rect rectangle to update
 */
 void Conducteur::update(const QRectF &rect = QRectF()) {
 	calculeConducteur();
@@ -37,11 +37,11 @@ void Conducteur::update(const QRectF &rect = QRectF()) {
 }
 
 /**
-	Met a jour la representation graphique du conducteur.
-	@param x      abscisse  du rectangle a mettre a jour
-	@param y      ordonnee du rectangle a mettre a jour
-	@param width  longueur du rectangle a mettre a jour
-	@param height hauteur du rectangle a mettre a jour
+	Updates the graphical representation of the driver.
+	@param x rectangle abscissa to update
+	@param y ordinate rectangle to update
+	@param width rectangle length to update
+	@param height rectangle height to be updated
 */
 void Conducteur::update(qreal x, qreal y, qreal width, qreal height) {
 	calculeConducteur();
@@ -49,16 +49,16 @@ void Conducteur::update(qreal x, qreal y, qreal width, qreal height) {
 }
 
 /**
-	Destructeur du Conducteur. Avant d'etre detruit, le conducteur se decroche des bornes
-	auxquelles il est lie.
+	Driver's destroyer.Before being destroyed, the driver removes terminals
+	to which he is linked.
 */
 /*Conducteur::~Conducteur() {
 
 }*/
 
 /**
-	Met a jour le QPainterPath constituant le conducteur pour obtenir
-	un conducteur uniquement compose de droites reliant les deux bornes.
+	Update the qpainterpath constituting the driver to get
+	A driver only composed of lines connecting the two terminals.
 */
 void Conducteur::calculeConducteur() {
 	QPainterPath t;
@@ -68,7 +68,7 @@ void Conducteur::calculeConducteur() {
 	
 	QPointF depart, arrivee;
 	Borne::Orientation ori_depart, ori_arrivee;
-	// distingue le depart de l'arrivee : le trajet se fait toujours de gauche a droite
+	// distinguishes the departure from the arrival: the trip is always from left to right
 	if (p1.x() <= p2.x()) {
 		depart      = mapFromScene(p1);
 		arrivee     = mapFromScene(p2);
@@ -81,49 +81,49 @@ void Conducteur::calculeConducteur() {
 		ori_arrivee = borne1 -> orientation();
 	}
 	
-	// debut du trajet
+	// Beginning of the trip
 	t.moveTo(depart);
 	if (depart.y() < arrivee.y()) {
-		// trajet descendant
+		// downhide
 		if ((ori_depart == Borne::Nord && (ori_arrivee == Borne::Sud || ori_arrivee == Borne::Ouest)) || (ori_depart == Borne::Est && ori_arrivee == Borne::Ouest)) {
-			// cas « 3 »
+		// case ï¿½ 3 ï¿½
 			qreal ligne_inter_x = (depart.x() + arrivee.x()) / 2.0;
 			t.lineTo(ligne_inter_x, depart.y());
 			t.lineTo(ligne_inter_x, arrivee.y());
 		} else if ((ori_depart == Borne::Sud && (ori_arrivee == Borne::Nord || ori_arrivee == Borne::Est)) || (ori_depart == Borne::Ouest && ori_arrivee == Borne::Est)) {
-			// cas « 4 »
+			// case ï¿½ 4 ï¿½
 			qreal ligne_inter_y = (depart.y() + arrivee.y()) / 2.0;
 			t.lineTo(depart.x(), ligne_inter_y);
 			t.lineTo(arrivee.x(), ligne_inter_y);
 		} else if ((ori_depart == Borne::Nord || ori_depart == Borne::Est) && (ori_arrivee == Borne::Nord || ori_arrivee == Borne::Est)) {
-			t.lineTo(arrivee.x(), depart.y()); // cas « 2 »
-		} else t.lineTo(depart.x(), arrivee.y()); // cas « 1 »
+			t.lineTo(arrivee.x(), depart.y()); // cas ï¿½ 2 ï¿½
+		} else t.lineTo(depart.x(), arrivee.y()); // cas ï¿½ 1 ï¿½
 	} else {
-		// trajet montant
+		// rising path
 		if ((ori_depart == Borne::Ouest && (ori_arrivee == Borne::Est || ori_arrivee == Borne::Sud)) || (ori_depart == Borne::Nord && ori_arrivee == Borne::Sud)) {
-			// cas « 3 »
+		// case ï¿½ 3 ï¿½
 			qreal ligne_inter_y = (depart.y() + arrivee.y()) / 2.0;
 			t.lineTo(depart.x(), ligne_inter_y);
 			t.lineTo(arrivee.x(), ligne_inter_y);
 		} else if ((ori_depart == Borne::Est && (ori_arrivee == Borne::Ouest || ori_arrivee == Borne::Nord)) || (ori_depart == Borne::Sud && ori_arrivee == Borne::Nord)) {
-			// cas « 4 »
+		// case ï¿½ 4 ï¿½
 			qreal ligne_inter_x = (depart.x() + arrivee.x()) / 2.0;
 			t.lineTo(ligne_inter_x, depart.y());
 			t.lineTo(ligne_inter_x, arrivee.y());
 		} else if ((ori_depart == Borne::Ouest || ori_depart == Borne::Nord) && (ori_arrivee == Borne::Ouest || ori_arrivee == Borne::Nord)) {
-			t.lineTo(depart.x(), arrivee.y()); // cas « 2 »
-		} else t.lineTo(arrivee.x(), depart.y()); // cas « 1 »
+			t.lineTo(depart.x(), arrivee.y()); // cas ï¿½ 2 ï¿½
+		} else t.lineTo(arrivee.x(), depart.y()); // cas ï¿½ 1 ï¿½
 	}
-	// fin du trajet
+	// End of the journey
 	t.lineTo(arrivee);
 	setPath(t);
 }
 
 /**
-	Dessine le conducteur sans antialiasing.
-	@param qp Le QPainter a utiliser pour dessiner le conducteur
-	@param qsogi Les options de style pour le conducteur
-	@param qw Le QWidget sur lequel on dessine 
+	Draw the driver without antialiasing.
+	@param qp the qpainter to use to draw the driver
+	@param QSogi style options for the driver
+	@param qw the qwidget on which we draw
 */
 void Conducteur::paint(QPainter *qp, const QStyleOptionGraphicsItem *qsogi, QWidget *qw) {
 	qp -> save();
@@ -135,10 +135,10 @@ void Conducteur::paint(QPainter *qp, const QStyleOptionGraphicsItem *qsogi, QWid
 }
 
 /**
-	Indique si deux orientations de Borne sont sur le meme axe (Vertical / Horizontal).
+	Indicates whether two terminal orientations are on the same axis (vertical / horizontal).
 	@param a La premiere orientation de Borne
-	@param b La seconde orientation de Borne
-	@return Un booleen a true si les deux orientations de bornes sont sur le meme axe
+	@param b the second orientation of terminal
+	@return a boolean true if the two orientations of terminals are on the same axis
 */
 bool Conducteur::surLeMemeAxe(Borne::Orientation a, Borne::Orientation b) {
 	if ((a == Borne::Nord || a == Borne::Sud) && (b == Borne::Nord || b == Borne::Sud)) return(true);
@@ -147,25 +147,26 @@ bool Conducteur::surLeMemeAxe(Borne::Orientation a, Borne::Orientation b) {
 }
 
 /**
-	Indique si une orientation de borne est horizontale (Est / Ouest).
-	@param a L'orientation de borne
-	@return True si l'orientation de borne est horizontale, false sinon
+	Indicates whether a terminal orientation is horizontal (East / West).
+	@Param has the orientation of terminal
+	@return true if the terminal orientation is horizontal, false otherwise
 */
 bool Conducteur::estHorizontale(Borne::Orientation a) {
 	return(a == Borne::Est || a == Borne::Ouest);
 }
 
 /**
-	Indique si une orientation de borne est verticale (Nord / Sud).
-	@param a L'orientation de borne
-	@return True si l'orientation de borne est verticale, false sinon
+	Indicates whether a terminal orientation is vertical (North / South).
+	@Param has the orientation of terminal
+	@Param has the orientation of terminal
+	@return True if the orientation of terminal is vertical, false otherwise
 */
 bool Conducteur::estVerticale(Borne::Orientation a) {
 	return(a == Borne::Nord || a == Borne::Sud);
 }
 
 /**
-	Methode de preparation a la destruction du conducteur ; le conducteur se detache de ses deux bornes
+Method of preparation to the destruction of the driver;The driver is detached from his two terminals
 */
 void Conducteur::destroy() {
 	destroyed = true;
@@ -174,24 +175,25 @@ void Conducteur::destroy() {
 }
 
 /**
-	Methode de validation d'element XML
-	@param e Un element XML sense represente un Conducteur
-	@return true si l'element XML represente bien un Conducteur ; false sinon
+	ELEMENT VALIDATION METHOD XML
+	@param e an element XML Sense represents a driver
+	@return True if the XML element represents a driver well;false otherwise
 */
 bool Conducteur::valideXml(QDomElement &e){
-	// verifie le nom du tag
+	// verify the name of the tag
 	if (e.tagName() != "conducteur") return(false);
 	
-	// verifie la presence des attributs minimaux
+	// check the presence of minimum attributes
 	if (!e.hasAttribute("borne1")) return(false);
 	if (!e.hasAttribute("borne2")) return(false);
 	
 	bool conv_ok;
-	// parse l'abscisse
+	// Parse the abscissa
 	e.attribute("borne1").toInt(&conv_ok);
 	if (!conv_ok) return(false);
 	
-	// parse l'ordonnee
+
+	// Parse ordinate
 	e.attribute("borne2").toInt(&conv_ok);
 	if (!conv_ok) return(false);
 	return(true);
