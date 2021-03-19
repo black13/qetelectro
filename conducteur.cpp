@@ -3,11 +3,11 @@
 #include "element.h"
 
 /**
-	Constructeur
-	@param p1     Premiere Borne auquel le conducteur est lie
-	@param p2     Seconde Borne auquel le conducteur est lie
-	@param parent Element parent du conducteur (0 par defaut)
-	@param scene  QGraphicsScene auquelle appartient le conducteur
+	Constructor
+	@param p1 first terminal to which the driver is linked
+	@param p2 second terminal to which the driver is linked
+	@Param Parent Element of the driver (0 by default)
+	@Param Scene QGraphicsscene in which the driver belongs
 */
 Conducteur::Conducteur(Borne *p1, Borne* p2, Element *parent, QGraphicsScene *scene) : QGraphicsPathItem(parent) {
 	// terminals that the conductor connects
@@ -23,13 +23,13 @@ Conducteur::Conducteur(Borne *p1, Borne* p2, Element *parent, QGraphicsScene *sc
 	QPen t;
 	t.setWidthF(1.0);
 	setPen(t);
-	// calcul du rendu du conducteur
+	// Calculation of driver rendering
 	calculeConducteur();
 }
 
 /**
-	Met a jour la representation graphique du conducteur.
-	@param rect Rectangle a mettre a jour
+	Updates the graphical representation of the driver.
+	@param rect rectangle to update
 */
 void Conducteur::update(const QRectF &rect = QRectF()) {
 	calculeConducteur();
@@ -37,11 +37,11 @@ void Conducteur::update(const QRectF &rect = QRectF()) {
 }
 
 /**
-	Met a jour la representation graphique du conducteur.
-	@param x      abscisse  du rectangle a mettre a jour
-	@param y      ordonnee du rectangle a mettre a jour
-	@param width  longueur du rectangle a mettre a jour
-	@param height hauteur du rectangle a mettre a jour
+	Updates the graphical representation of the driver.
+	@param x rectangle abscissa to update
+	@param y ordinate rectangle to update
+	@param width rectangle length to update
+	@param height rectangle height to be updated
 */
 void Conducteur::update(qreal x, qreal y, qreal width, qreal height) {
 	calculeConducteur();
@@ -49,16 +49,16 @@ void Conducteur::update(qreal x, qreal y, qreal width, qreal height) {
 }
 
 /**
-	Destructeur du Conducteur. Avant d'etre detruit, le conducteur se decroche des bornes
-	auxquelles il est lie.
+	Driver's destroyer.Before being destroyed, the driver removes terminals
+	to which he is linked.
 */
 /*Conducteur::~Conducteur() {
 
 }*/
 
 /**
-	Met a jour le QPainterPath constituant le conducteur pour obtenir
-	un conducteur uniquement compose de droites reliant les deux bornes.
+	Update the qpainterpath constituting the driver to get
+	A driver only composed of lines connecting the two terminals.
 */
 void Conducteur::calculeConducteur() {
 	QPainterPath t;
@@ -175,12 +175,12 @@ void Conducteur::destroy() {
 }
 
 /**
-	Methode de validation d'element XML
-	@param e Un element XML sense represente un Conducteur
-	@return true si l'element XML represente bien un Conducteur ; false sinon
+	ELEMENT VALIDATION METHOD XML
+	@param e an element XML Sense represents a driver
+	@return True if the XML element represents a driver well;false otherwise
 */
 bool Conducteur::valideXml(QDomElement &e){
-	// verifie le nom du tag
+	// verify the name of the tag
 	if (e.tagName() != "conducteur") return(false);
 	
 	// check the presence of minimum attributes
