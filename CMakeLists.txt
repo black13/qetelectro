@@ -54,9 +54,9 @@ elementperso.cpp
 main.cpp
 qetapp.cpp
 schemavue.cpp
-conductor.cpp
 del.cpp
 elementfixe.cpp
+elementfixe.h
 entree.cpp
 panelappareils.cpp
 schema.cpp

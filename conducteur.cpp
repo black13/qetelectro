@@ -184,12 +184,12 @@ bool Conducteur::valideXml(QDomElement &e){
 	if (e.tagName() != "conducteur") return(false);
 	
 	// check the presence of minimum attributes
-	if (!e.hasAttribute("terminal1")) return(false);
-	if (!e.hasAttribute("terminal2")) return(false);
+	if (!e.hasAttribute("borne1")) return(false);
+	if (!e.hasAttribute("borne2")) return(false);
 	
 	bool conv_ok;
 	// Parse the abscissa
-	e.attribute("terminal1").toInt(&conv_ok);
+	e.attribute("borne1").toInt(&conv_ok);
 	if (!conv_ok) return(false);
 	
 	// Parse ordinate

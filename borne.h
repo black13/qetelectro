@@ -1,6 +1,6 @@
 #ifndef BORNE_H
-	#define BORNE_H
-	#define TAILLE_BORNE 4
+#define BORNE_H
+#define TAILLE_BORNE 4
 	#include <QtWidgets>
 	#include <QtXml/QtXml>
 	class Conducteur;

@@ -1,7 +1,7 @@
 #ifndef ELEMENT_H
 	#define ELEMENT_H
 	#include <QtGui>
-	#include "terminal.h"
+	#include "borne.h"
 	class Schema;
 	class Element : public QGraphicsItem {
 		public:

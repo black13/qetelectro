@@ -5,7 +5,7 @@
 	This HERITE class of the fixed class to define a
 	contactor
 	*/
-	class Contactor : public FixedElement {
+	class Contacteur : public ElementFixe {
 		public:
 		Contactor(QGraphicsItem * = 0, Schema * = 0);
 		virtual int nbBornes() const;
