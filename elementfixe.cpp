@@ -1,21 +1,21 @@
 #include "elementfixe.h"
 /**
-Manufacturer
+constructor
 */
-FixedElement::FixedElement(QGraphicsItem *parent, Schema *scene) : Element(parent, scene) {
+ElementFixe::ElementFixe(QGraphicsItem *parent, Schema *scene) : Element(parent, scene) {
 }
 
 /**
 	@return the minimum number of terminals that the element can have
 */
-int FixedElement::nbBornesMin() const {
+int ElementFixe::nbBornesMin() const {
 	return(nbBornes());
 }
 
 /**
 	@return Le nombre maximal de bornes que l'element peut avoir
 */
-int FixedElement::nbBornesMax() const {
+int ElementFixe::nbBornesMax() const {
 	return(nbBornes());
 }
 
@@ -26,7 +26,7 @@ int FixedElement::nbBornesMax() const {
 	@return true if the import has managed, false otherwise
 	
  */
-bool FixedElement::fromXml(QDomElement &e, QHash<int, Terminal *> &table_id_adr) {
+bool ElementFixe::fromXml(QDomElement &e, QHash<int, Borne *> &table_id_adr) {
 /*
  the terminals will now be listed to associate their id to their real address
  this census will be used when placing the wires
@@ -42,14 +42,14 @@ bool FixedElement::fromXml(QDomElement &e, QHash<int, Terminal *> &table_id_adr)
 		for (QDomNode node_borne = bornes.firstChild() ; !node_borne.isNull() ; node_borne = node_borne.nextSibling()) {
 		// we are interested in the "bound" XML element
 			QDomElement borne = node_borne.toElement();
-			if (!borne.isNull() && Terminal::valideXml(borne)) liste_bornes.append(borne);
+			if (!borne.isNull() && Borne::valideXml(borne)) liste_bornes.append(borne);
 		}
 	}
 	
-	QHash<int, Terminal *> priv_id_adr;
+	QHash<int, Borne *> priv_id_adr;
 	int bornes_non_trouvees = 0;
 	foreach(QGraphicsItem *qgi, childItems()) {
-		if (Terminal *p = qgraphicsitem_cast<Terminal *>(qgi)) {
+		if (Borne *p = qgraphicsitem_cast<Borne *>(qgi)) {
 			bool borne_trouvee = false;
 			foreach(QDomElement qde, liste_bornes) {
 				if (p -> fromXml(qde)) {

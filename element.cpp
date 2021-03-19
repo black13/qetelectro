@@ -104,7 +104,7 @@ QPixmap Element::pixmap() {
 QVariant Element::itemChange(GraphicsItemChange change, const QVariant &value) {
 	if (change == QGraphicsItem::ItemPositionChange || change == QGraphicsItem::ItemSelectedChange) {
 		foreach(QGraphicsItem *qgi, childItems()) {
-			if (Terminal *p = qgraphicsitem_cast<Terminal *>(qgi)) p -> updateConducteur();
+			if (Borne *p = qgraphicsitem_cast<Borne *>(qgi)) p -> updateConducteur();
 		}
 	}
 	return(QGraphicsItem::itemChange(change, value));
@@ -224,7 +224,7 @@ void Element::setPos(const QPointF &p) {
 	// update the terminals / drivers
 	// update the terminals / drivers
 	foreach(QGraphicsItem *qgi, childItems()) {
-		if (Terminal *p = qgraphicsitem_cast<Terminal *>(qgi)) p -> updateConducteur();
+		if (Borne *p = qgraphicsitem_cast<Borne *>(qgi)) p -> updateConducteur();
 	}
 }
 

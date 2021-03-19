@@ -91,7 +91,7 @@ void SchemaVue::supprimer() {
 	foreach (QGraphicsItem *qgi, scene -> selectedItems()) {
 		if (!garbage_elmt.contains(qgi)) garbage_elmt.append(qgi);
 		// pour chaque enfant de l'element
-		foreach (QGraphicsItem *child, qgi -> children()) {
+		foreach (QGraphicsItem *child, qgi -> childItems()) {
 			// si cet enfant est une borne
 			if (Borne *p = qgraphicsitem_cast<Borne *>(child)) {
 				// alors chaque conducteur de la borne est recense

@@ -4,7 +4,7 @@
 #include <QMdiArea>
 #include <QPrinter>
 #include <QPrintDialog>
-	class SchemaView;
+	class SchemaVue;
 	class PanelAppareils;
 	/**
 	This class represents the main window of QELECTROTECH and,
@@ -17,7 +17,7 @@
 		public:
 		QETApp(QWidget *parent=0);
 		void closeEvent(QCloseEvent * event );
-		void addSchemaVue(SchemaView *);
+		void addSchemaVue(SchemaVue *);
 		
 		public slots:
 		void systray(QSystemTrayIcon::ActivationReason raison);
@@ -32,7 +32,7 @@
 		bool dialogue_enregistrer_sous();
 		bool enregistrer();
 		bool nouveau();
-		bool open();
+		bool ouvrir();
 		bool fermer();
 		
 		protected:
@@ -40,7 +40,7 @@
 		QAction *mode_selection;
 		QAction *mode_visualise;
 		QAction *nouveau_fichier;
-		QAction *open_fichier;
+		QAction *ouvrir_fichier;
 		QAction *fermer_fichier;
 		QAction *enr_fichier;
 		QAction *enr_fichier_sous;
@@ -84,7 +84,7 @@
 		
 		private:
 		QMdiArea workspace;
-		SchemaView *schemaInProgress();
+		SchemaVue *schemaEnCours();
 		QSignalMapper windowMapper;
 		/// dock for the panel of appliances
 		QDockWidget *qdw_pa;
@@ -95,7 +95,7 @@
 		QAction *systray_masquer;
 		QAction * config_fullscreen;
 		QAction *systray_quitter;
-		QMenu *menu_windows;
+		QMenu *menu_fenetres;
 		/// icon in the systray
 		QSystemTrayIcon *qsti;
 		/// Geometry of the main window
@@ -105,9 +105,9 @@
 		QToolBar *barre_outils;
 		
 		private slots:
-		void slot_cut();
+		void slot_couper();
 		void slot_copier();
-		void slot_paste();
+		void slot_coller();
 		void slot_zoomPlus();
 		void slot_zoomMoins();
 		void slot_zoomFit();

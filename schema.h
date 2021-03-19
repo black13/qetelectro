@@ -7,7 +7,7 @@
     #include <QDebug>
     #include <QUuid>
 	class Element;
-	class Terminal;
+	class Borne;
 	class Schema : public QGraphicsScene {
 		Q_OBJECT
 		public:
@@ -37,7 +37,7 @@
 		QString titre;
 		QString folio;       // vraiment necessaire ce truc ?
 		QString nom_fichier; // meme remarque
-		Element *elementFromXml(QDomElement &e, QHash<int, Terminal *> &);
+		Element *elementFromXml(QDomElement &e, QHash<int, Borne *> &);
 
 		private slots:
 		void slot_checkSelectionChange();

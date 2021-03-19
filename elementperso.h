@@ -2,13 +2,13 @@
 	#define ELEMENTPERSO_H
 	#include "elementfixe.h"
 	#include <QtGui>
-	class ElementPerso : public FixedElement {
+	class ElementPerso : public ElementFixe {
 		public:
 		ElementPerso(QString &, QGraphicsItem * = 0, Schema * = 0, int * = NULL);
 		virtual int nbBornes() const;
 		virtual void paint(QPainter *, const QStyleOptionGraphicsItem *);
 		QString typeId() { return(nomfichier); }
-		QString file() { return(nomfichier); }
+		QString fichier() { return(nomfichier); }
 		bool isNull() { return(elmt_etat != 0); }
 		int etat() { return(elmt_etat); }
 		QString nom() { return(priv_nom); }

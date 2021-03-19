@@ -1,6 +1,6 @@
 #include "elementperso.h"
 
-ElementPerso::ElementPerso(QString &nom_fichier, QGraphicsItem *qgi, Schema *s, int *etat) : FixedElement(qgi, s) {
+ElementPerso::ElementPerso(QString &nom_fichier, QGraphicsItem *qgi, Schema *s, int *etat) : ElementFixe(qgi, s) {
 	nomfichier = nom_fichier;
 	nb_bornes = 0;
 	// pessimism inside: by default, it's fair
@@ -16,8 +16,8 @@ ElementPerso::ElementPerso(QString &nom_fichier, QGraphicsItem *qgi, Schema *s, 
 	}
 	
 	// The file must be readable
-	QFile file(nomfichier);
-	if (!file.open(QIODevice::ReadOnly)) {
+	QFile fichier(nomfichier);
+	if (!fichier.open(QIODevice::ReadOnly)) {
 		if (etat != NULL) *etat = 2;
 		elmt_etat = 2;
 		return;
@@ -25,15 +25,15 @@ ElementPerso::ElementPerso(QString &nom_fichier, QGraphicsItem *qgi, Schema *s, 
 	
  // the file must be an XML document
 	QDomDocument document_xml;
-	if (!document_xml.setContent(&file)) {
+	if (!document_xml.setContent(&fichier)) {
 		if (etat != NULL) *etat = 3;
 		elmt_etat = 3;
 		return;
 	}
 	
  // the root is assumed to be an element definition 
-	QDomElement root = document_xml.documentElement();
-	if (root.tagName() != "definition" || root.attribute("type") != "element") {
+	QDomElement racine = document_xml.documentElement();
+	if (racine.tagName() != "definition" || racine.attribute("type") != "element") {
 		if (etat != NULL) *etat = 4;
 		elmt_etat = 4;
 		return;
@@ -42,11 +42,11 @@ ElementPerso::ElementPerso(QString &nom_fichier, QGraphicsItem *qgi, Schema *s, 
  // these attributes must be present and valid
 	int w, h, hot_x, hot_y;
 	if (
-		root.attribute("nom") == QString("") ||\
-		!attributeIsAnInteger(root, QString("width"), &w) ||\
-		!attributeIsAnInteger(root, QString("height"), &h) ||\
-		!attributeIsAnInteger(root, QString("hotspot_x"), &hot_x) ||\
-		!attributeIsAnInteger(root, QString("hotspot_y"), &hot_y)
+		racine.attribute("nom") == QString("") ||\
+		!attributeIsAnInteger(racine, QString("width"), &w) ||\
+		!attributeIsAnInteger(racine, QString("height"), &h) ||\
+		!attributeIsAnInteger(racine, QString("hotspot_x"), &hot_x) ||\
+		!attributeIsAnInteger(racine, QString("hotspot_y"), &hot_y)
 	) {
 		if (etat != NULL) *etat = 5;
 		elmt_etat = 5;
@@ -54,12 +54,12 @@ ElementPerso::ElementPerso(QString &nom_fichier, QGraphicsItem *qgi, Schema *s, 
 	}
 	
  // we can already specify the name, size and hotspot
-	priv_nom = root.attribute("nom");
+	priv_nom = racine.attribute("nom");
 	setSize(w, h);
 	setHotspot(QPoint(hot_x, hot_y));
 	
  // the definition is assumed to have children
-	if (root.firstChild().isNull()) {
+	if (racine.firstChild().isNull()) {
 		if (etat != NULL) *etat = 6;
 		elmt_etat = 6;
 		return;
@@ -74,7 +74,7 @@ ElementPerso::ElementPerso(QString &nom_fichier, QGraphicsItem *qgi, Schema *s, 
 	t.setWidthF(1.0);
 	t.setJoinStyle(Qt::MiterJoin);
 	qp.setPen(t);
-	for (QDomNode node = root.firstChild() ; !node.isNull() ; node = node.nextSibling()) {
+	for (QDomNode node = racine.firstChild() ; !node.isNull() ; node = node.nextSibling()) {
 		QDomElement elmts = node.toElement();
 		if(elmts.isNull()) continue;
 		if (parseElement(elmts, qp, s)) ++ nb_elements_parses;
@@ -94,7 +94,7 @@ ElementPerso::ElementPerso(QString &nom_fichier, QGraphicsItem *qgi, Schema *s, 
 	}
 	
     // Closing the file
-	file.close();
+	fichier.close();
 	
 	if (etat != NULL) *etat = 0;
 	elmt_etat = 0;
@@ -165,16 +165,16 @@ bool ElementPerso::parsePolygone(QDomElement &e, QPainter &qp) {
 bool ElementPerso::parseBorne(QDomElement &e, Schema *s) {
  // check the presence and validity of mandatory attributes
 	int bornex, borney;
-	Terminal::Orientation borneo;
+	Borne::Orientation borneo;
 	if (!attributeIsAnInteger(e, QString("x"), &bornex)) return(false);
 	if (!attributeIsAnInteger(e, QString("y"), &borney)) return(false);
 	if (!e.hasAttribute("orientation")) return(false);
-	if (e.attribute("orientation") == "n") borneo = Terminal::Nord;
-	else if (e.attribute("orientation") == "s") borneo = Terminal::Sud;
-	else if (e.attribute("orientation") == "e") borneo = Terminal::Est;
-	else if (e.attribute("orientation") == "o") borneo = Terminal::Ouest;
+	if (e.attribute("orientation") == "n") borneo = Borne::Nord;
+	else if (e.attribute("orientation") == "s") borneo = Borne::Sud;
+	else if (e.attribute("orientation") == "e") borneo = Borne::Est;
+	else if (e.attribute("orientation") == "o") borneo = Borne::Ouest;
 	else return(false);
-	new Terminal(bornex, borney, borneo, this, s);
+	new Borne(bornex, borney, borneo, this, s);
 	++ nb_bornes;
 	return(true);
 }

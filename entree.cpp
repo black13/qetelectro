@@ -5,13 +5,13 @@
 	@Param parent The parent QObject of the element.
 	@Param scene the scene on which the element is displays
 */
-Entree::Entree(QGraphicsItem *parent, Schema *scene) : FixedElement(parent, scene) {
+Entree::Entree(QGraphicsItem *parent, Schema *scene) : ElementFixe(parent, scene) {
 	// size and hotspot
 	setSize(20, 40);
 	setHotspot(QPoint(10, 15));
 	
 	// Add a terminal to the element
-	new Terminal(0,  15, Terminal::Sud, this, scene);
+	new Borne(0,  15, Borne::Sud, this, scene);
 }
 
 /**

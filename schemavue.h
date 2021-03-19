@@ -1,6 +1,8 @@
 #ifndef SCHEMAVUE_H
 	#define SCHEMAVUE_H
 	#include <QtGui>
+    #include <QDebug>
+    #include <QUuid>
 	class Schema;
 	#include "element.h"
 	#include "conducteur.h"
@@ -27,7 +29,7 @@
 		QString nom_fichier;
 		bool enregistrer();
 		bool enregistrer_sous();
-		
+		QUuid   m_uuid;
 		private:
 		bool private_enregistrer(QString &);
 		void initialise();
