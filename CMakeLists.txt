@@ -17,10 +17,22 @@ find_package(Qt5 COMPONENTS Core Widgets Svg REQUIRED)
 
 find_package(Qt5 REQUIRED COMPONENTS Widgets Core Gui Sql PrintSupport Test)
 
-  FIND_PACKAGE(Qt5Core REQUIRED)
-  FIND_PACKAGE(Qt5Gui REQUIRED)
-  FIND_PACKAGE(Qt5Xml REQUIRED)
-  find_package(Qt5PrintSupport REQUIRED)
+find_package(Qt5 
+    COMPONENTS
+        Core
+        Widgets
+        Qml
+        Svg
+        Quick
+        QuickControls2
+        Charts
+        Multimedia
+        LinguistTools
+        QmlImportScanner 
+        Xml
+    REQUIRED QUIET
+)
+
   #-----------------------------------------------------
   set(QT5_INSTALLED TRUE)
   # # by default only QtCore and QtGui modules are enabled
@@ -40,7 +52,7 @@ qetapp.cpp
 schemaview.cpp
 conductor.cpp
 del.cpp
-FixedElement.cpp
+elementfixe.cpp
 entree.cpp
 panelappareils.cpp
 schema.cpp

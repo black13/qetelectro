@@ -4,14 +4,14 @@
 	#include "terminal.h"
 	class Element;
 	/**
-		This class represents a driver. A conductor connects two element terminals.
+		This class represents a driver.A driver connects two element terminals.
 	*/
 	class Conductor : public QGraphicsPathItem {
 		public:
 		enum { Type = UserType + 1001 };
     	virtual int type() const { return Type; }
 		Conductor(Terminal *, Terminal *, Element * = 0, QGraphicsScene * = 0);
-		//virtual ~Conductor();
+		// virtual ~ conductor ();
 		
 		void destroy();
 		bool isDestroyed() const { return(destroyed); }
@@ -20,12 +20,12 @@
 		void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
 		static bool valideXml(QDomElement &);
 		
-		/// First terminal to which the wire is attached
+		/// first terminal at which the wire is attached
 		Terminal *terminal1;
-		/// Second terminal to which the wire is attached
+		/// second terminal at which the thread is attached
 		Terminal *terminal2;
 		private:
-		/// booleen indicating if the thread is still valid
+		/// boolen indicating if the wire is still valid
 		bool destroyed;
 		
 		void calculateConductor();

@@ -6,7 +6,7 @@
 #include "entree.h"
 
 /**
-	Initialise le SchemaView
+	Initializes the schemavue
 */
 void SchemaView::initialise() {
 
@@ -20,31 +20,31 @@ void SchemaView::initialise() {
 }
 
 /**
-	Constructeur par defaut
+	Default builder
 */
 SchemaView::SchemaView() : QGraphicsView() {
 	initialise();
 }
 
 /**
-	Constructeur
-	@param parent Le QWidegt parent de cette vue de schema
+	Manufacturer
+	@param parent the parent qwidegt of this scheme view
 */
 SchemaView::SchemaView(QWidget *parent) : QGraphicsView(parent) {
 	initialise();
 }
 
 /**
-	Permet de savoir si le rendu graphique du SchemaView est antialiase ou non.
-	@return Un booleen indiquant si le SchemaView est antialiase
+	Lets you know if the graphic rendering of the schemavue is antialiasis or not.
+	@return a booleen indicating whether the schemavue is antialiasis
 */
 bool SchemaView::antialiased() const {
 	return(antialiasing);
 }
 
 /**
-	Active ou desactive l'antialiasing pour le rendu graphique du SchemaView.
-	@param aa un booleen indiquant si le SchemaView doit etre antialiase ou non
+	Active or disable the antialiasing for the graphic rendering of the schemavue.
+	@Param has a booleen indicating whether the scheme view must be antialiased or not
 */
 void SchemaView::setAntialiasing(bool aa) {
 	antialiasing = aa;
@@ -55,8 +55,8 @@ void SchemaView::setAntialiasing(bool aa) {
 }
 
 /**
-	appelle la methode select sur tous les elements de la liste d'elements
-	@todo modifier selectAll pour l'integration des conducteurs
+	calls the SELECT method on all elements of the list of elements
+	@todo Edit Selectall for Integration of Drivers
 */
 void SchemaView::selectAll() {
 	if (scene -> items().isEmpty()) return;
@@ -64,8 +64,8 @@ void SchemaView::selectAll() {
 }
 
 /**
-	appelle la methode deselect sur tous les elements de la liste d'elements
-	@todo modifier selectNothing pour l'integration des conducteurs
+	Calls the Delect method on all elements of the list of elements
+	@todo modify selectnothing for the integration of drivers
 */
 void SchemaView::selectNothing() {
 	if (scene -> items().isEmpty()) return;
@@ -73,8 +73,8 @@ void SchemaView::selectNothing() {
 }
 
 /**
-	Inverse l'etat de selection de tous les elements de la liste d'elements
-	@todo modifier selectInvert pour l'integration des conducteurs
+	Reverses the selection state of all elements of the list of elements
+	@todo Edit Selectinvert for Integration of Drivers
  */
 void SchemaView::selectInvert() {
 	if (scene -> items().isEmpty()) return;
@@ -91,11 +91,11 @@ void SchemaView::supprimer() {
 	// useless but careful : creating two lists : one for wires, one for elements
 	foreach (QGraphicsItem *qgi, scene -> selectedItems()) {
 		if (!garbage_elmt.contains(qgi)) garbage_elmt.append(qgi);
-		// pour chaque enfant de l'element
+		// For each child of the element
 		foreach (QGraphicsItem *child, qgi -> childItems()) {
-			// si cet enfant est une borne
+			// if this child is a terminal
 			if (Terminal *p = qgraphicsitem_cast<Terminal *>(child)) {
-				// alors chaque conducteur de la borne est recense
+				// then each driver of the terminal is listed
 				foreach (Conductor *f, p -> conducteurs()) {
 					if (!garbage_conducteurs.contains(f)) garbage_conducteurs.append(f);
 				}
@@ -104,7 +104,7 @@ void SchemaView::supprimer() {
 	}
 	scene -> clearSelection();
 	
-	// "destroying" the wires, removing them from the scene and stocking them into the « garbage »
+	// "destroying" the wires, removing them from the scene and stocking them into the ï¿½ garbage ï¿½
 	foreach (QGraphicsItem *qgi, garbage_conducteurs) {
 		if (Conductor *f = qgraphicsitem_cast<Conductor *>(qgi)) {
 			f -> destroy();
@@ -113,7 +113,7 @@ void SchemaView::supprimer() {
 		}
 	}
 	
-	// removing the elements from the scene and stocking them into the « garbage »
+	// removing the elements from the scene and stocking them into the ï¿½ garbage ï¿½
 	foreach (QGraphicsItem *qgi, garbage_elmt) {
 		scene -> removeItem(qgi);
 		throwToGarbage(qgi);
@@ -127,7 +127,7 @@ void SchemaView::supprimer() {
 	@param qgi L'item a supprimer
 */
 void SchemaView::throwToGarbage(QGraphicsItem *qgi) {
-	// pas de doublon dans le garbage (sinon ca va sentir la segfault)
+	// No duplicate in the garbage (otherwise it will feel the segfault)
 	bool qgi_deja_dans_le_garbage = false;
 	foreach(QGraphicsItem *gbg_qgi, garbage) {
 		if ((void *)gbg_qgi == (void *)qgi) {
@@ -162,9 +162,9 @@ void SchemaView::pivoter() {
 }
 
 /**
-	accepte ou refuse le drag'n drop en fonction du type de donnees entrant
-	@param e le QDragEnterEvent correspondant au drag'n drop tente
-	@todo trouver un MIME Type plus adapte
+	Accepts or refuses Drag'n Drop according to the type of incoming data
+	@param e the QDragÃ©nterevent corresponding to the Drag'n Drop tent
+	@todo Find a mime more adaptive
 */
 void SchemaView::dragEnterEvent(QDragEnterEvent *e) {
 	if (e -> mimeData() -> hasFormat("text/plain")) e -> acceptProposedAction();
@@ -173,13 +173,13 @@ void SchemaView::dragEnterEvent(QDragEnterEvent *e) {
 
 /**
 	gere les dragleaveevent
-	@param e le QDragEnterEvent correspondant au drag'n drop sortant
+	@param e the QDragÃ©nterevent corresponding to the Drag'n Drop outgoing
 */
 void SchemaView::dragLeaveEvent(QDragLeaveEvent *) {}
 
 /**
-	accepte ou refuse le drag'n drop en fonction du type de donnees entrant
-	@param e le QDragMoveEvent correspondant au drag'n drop tente
+	Accepts or refuses Drag'n Drop according to the type of incoming data
+	@param e the QDragmoveEvent corresponding to the Drag'n Drop tent
 */
 void SchemaView::dragMoveEvent(QDragMoveEvent *e) {
 	if (e -> mimeData() -> hasFormat("text/plain")) e -> acceptProposedAction();
@@ -187,9 +187,9 @@ void SchemaView::dragMoveEvent(QDragMoveEvent *e) {
 }
 
 /**
-	gere les depots (drop) acceptes sur le Schema
-	@param e le QDropEvent correspondant au drag'n drop effectue
-	@todo Ajouter directement l'objet Element a la scene lorsque le drag'n drop aura ete ameliore
+	GERE THE DEPOSITS (DROP) ACCEPTED ON THE SCHEMA
+	@param e the QDRopevent corresponding to the Drag'n Drop carries out
+	@todo add directly the object to the scene when the Drag'n Drop will have been improved
 */
 void SchemaView::dropEvent(QDropEvent *e) {
 	QString file = e -> mimeData() -> text();
@@ -235,9 +235,9 @@ void SchemaView::zoomMoins() {
 }
 
 /**
-	Agrandit ou rectrecit le schema de facon a ce que tous les elements du
-	schema soient visibles a l'ecran. S'il n'y a aucun element sur le schema,
-	le zoom est reinitialise
+	Enlarge or rectified the schema in fact to what all the elements of the
+	Schema is visible to the screen.If there is no element on the schema,
+	The zoom is reinitialized
 */
 void SchemaView::zoomFit() {
 	if (scene -> items().isEmpty()) {
@@ -314,13 +314,13 @@ Open a * .qet file in this SchemaView
 @return true if the opening was successful, false otherwise
 */
 bool SchemaView::open(QString n_fichier, int *erreur) {
-	// verifie l'existence du file
+	// check the existence of the file
 	if (!QFileInfo(n_fichier).exists()) {
 		if (erreur != NULL) *erreur = 1;
 		return(false);
 	}
 	
-	// ouvre le file
+	// Open the file
 	QFile file(n_fichier);
 	if (!file.open(QIODevice::ReadOnly)) {
 		if (erreur != NULL) *erreur = 2;
@@ -336,7 +336,7 @@ bool SchemaView::open(QString n_fichier, int *erreur) {
 	}
 	file.close();
 	
-	// construit le schema a partir du QDomDocument
+	// Construct the Scheme The QomDoComent Party
 	QDomDocument &doc = document;
 	if (scene -> fromXml(doc)) {
 		if (erreur != NULL) *erreur = 0;
@@ -354,7 +354,7 @@ void SchemaView::slot_selectionChanged() {
 }
 
 void SchemaView::closeEvent(QCloseEvent *event) {
-	// demande d'abord a l'utilisateur s'il veut enregistrer le schema en cours
+	// ask the user first if he wants to register the current schema
 	QMessageBox::StandardButton reponse = QMessageBox::question(
 		this,
 		tr("Save the current schema?"),
@@ -402,16 +402,17 @@ bool SchemaView::enregistrer_sous() {
 	);
 	// if no name is entered, return false.
 	if (n_fichier == "") return(false);
-	// si le nom ne se termine pas par l'extension .qet, celle-ci est ajoutee
+	// if the name does not end with the extension .qet, it is added
 	if (!n_fichier.endsWith(".qet", Qt::CaseInsensitive)) n_fichier += ".qet";
-	// tente d'enregistrer le file
+	// tries to save the file
 	bool resultat_enregistrement = private_enregistrer(n_fichier);
-	// si l'enregistrement reussit, le nom du file est conserve
+	// if the successful recording, the file name is retained
 	if (resultat_enregistrement) {
 		nom_fichier = n_fichier;
 		setWindowTitle(nom_fichier + "[*]");
 	}
 	// retourne un booleen representatif de la reussite de l'enregistrement
+	// returns a booleen representative of the success of the recording
 	return(resultat_enregistrement);
 }
 

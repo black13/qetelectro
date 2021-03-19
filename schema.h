@@ -31,7 +31,7 @@
 		private:
 		QGraphicsLineItem *poseur_de_conducteur;
 		bool doit_dessiner_grille;
-		// elements du cartouche
+		// Cartridge elements
 		QString auteur;
 		QDate   date;
 		QString titre;

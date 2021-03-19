@@ -3,11 +3,11 @@
 #include "element.h"
 #include "debug.h"
 /**
-Builder
-@param p1 First Terminal to which the driver is linked
-@param p2 Second Terminal to which the driver is linked
-@param parent Parent element of the driver (0 by default)
-@param scene QGraphicsScene to which the conductor belongs
+	Constructor
+	@param p1 first terminal to which the driver is linked
+	@param p2 second terminal to which the driver is linked
+	@Param Parent Element of the driver (0 by default)
+	@Param Scene QGraphicsscene in which the driver belongs
 */
 Conductor::Conductor(Terminal *p1, Terminal* p2, Element *parent, QGraphicsScene *scene) : QGraphicsPathItem(parent) {
 	trace_msg("");
@@ -17,20 +17,20 @@ Conductor::Conductor(Terminal *p1, Terminal* p2, Element *parent, QGraphicsScene
 	// add the conductor to the list of conductors for each of the two terminals
 	bool ajout_p1 = terminal1 -> addConducteur(this);
 	bool ajout_p2 = terminal2 -> addConducteur(this);
-	// in case of failure of the addition (driver already existing in particular)
+	// en cas d'echec de l'ajout (conducteur deja existant notamment)
 	if (!ajout_p1 || !ajout_p2) return;
 	destroyed = false;
- // the driver is represented by a thin line
+	// the driver is represented by a fine line
 	QPen t;
 	t.setWidthF(1.0);
 	setPen(t);
-	// calcul du rendu du conducteur
+	// Calculation of driver rendering
 	calculateConductor();
 }
 
 /**
 	Updates the graphical representation of the driver.
-	@param rect Rectangle to update
+	@param rect rectangle to update
 */
 void Conductor::update(const QRectF &rect = QRectF()) {
 	calculateConductor();
@@ -38,8 +38,11 @@ void Conductor::update(const QRectF &rect = QRectF()) {
 }
 
 /**
-	Destroyer of the Conductor. Before being destroyed, the conductor unhooks from the terminals
-	to which it is linked.
+	Updates the graphical representation of the driver.
+	@param x rectangle abscissa to update
+	@param y ordinate rectangle to update
+	@param width rectangle length to update
+	@param height rectangle height to be updated
 */
 void Conductor::update(qreal x, qreal y, qreal width, qreal height) {
 	calculateConductor();
@@ -47,16 +50,16 @@ void Conductor::update(qreal x, qreal y, qreal width, qreal height) {
 }
 
  /**
- Destroyer of the Conductor. Before being destroyed, the conductor unhooks from the terminals
- to which it is linked.
+	Driver's destroyer.Before being destroyed, the driver removes terminals
+	to which he is linked.
  */
  /* Driver::~Driver () {
 
 }*/
 
 /**
-Updates the QPainterPath constituting the conductor to obtain
-a conductor only consists of straight lines connecting the two terminals.
+	Update the qpainterpath constituting the driver to get
+	A driver only composed of lines connecting the two terminals.
 */
 void Conductor::calculateConductor() {
 	QPainterPath t;
@@ -66,7 +69,7 @@ void Conductor::calculateConductor() {
 	
 	QPointF depart, arrivee;
 	Terminal::Orientation ori_depart, ori_arrivee;
-	// distingue le depart de l'arrivee : le trajet se fait toujours de gauche a droite
+	// distinguishes the departure from the arrival: the trip is always from left to right
 	if (p1.x() <= p2.x()) {
 		depart      = mapFromScene(p1);
 		arrivee     = mapFromScene(p2);
@@ -79,12 +82,12 @@ void Conductor::calculateConductor() {
 		ori_arrivee = terminal1 -> orientation();
 	}
 	
-	// debut du trajet
+	// Beginning of the trip
 	t.moveTo(depart);
 	if (depart.y() < arrivee.y()) {
- // downward path
+		// downhide
 		if ((ori_depart == Terminal::Nord && (ori_arrivee == Terminal::Sud || ori_arrivee == Terminal::Ouest)) || (ori_depart == Terminal::Est && ori_arrivee == Terminal::Ouest)) {
- // case   3  
+		// case ï¿½ 3 ï¿½
 			qreal ligne_inter_x = (depart.x() + arrivee.x()) / 2.0;
 			t.lineTo(ligne_inter_x, depart.y());
 			t.lineTo(ligne_inter_x, arrivee.y());
@@ -94,23 +97,23 @@ void Conductor::calculateConductor() {
 			t.lineTo(depart.x(), ligne_inter_y);
 			t.lineTo(arrivee.x(), ligne_inter_y);
 		} else if ((ori_depart == Terminal::Nord || ori_depart == Terminal::Est) && (ori_arrivee == Terminal::Nord || ori_arrivee == Terminal::Est)) {
-			t.lineTo(arrivee.x(), depart.y()); // cas « 2 »
-		} else t.lineTo(depart.x(), arrivee.y()); // cas « 1 »
+			t.lineTo(arrivee.x(), depart.y()); // cas Â« 2 Â»
+		} else t.lineTo(depart.x(), arrivee.y()); // cas Â« 1 Â»
 	} else {
- // upward journey
+		// rising path
 		if ((ori_depart == Terminal::Ouest && (ori_arrivee == Terminal::Est || ori_arrivee == Terminal::Sud)) || (ori_depart == Terminal::Nord && ori_arrivee == Terminal::Sud)) {
- // case   3  
+		// case ï¿½ 3 ï¿½
 			qreal ligne_inter_y = (depart.y() + arrivee.y()) / 2.0;
 			t.lineTo(depart.x(), ligne_inter_y);
 			t.lineTo(arrivee.x(), ligne_inter_y);
 		} else if ((ori_depart == Terminal::Est && (ori_arrivee == Terminal::Ouest || ori_arrivee == Terminal::Nord)) || (ori_depart == Terminal::Sud && ori_arrivee == Terminal::Nord)) {
-			// cas « 4 »
+		// case ï¿½ 4 ï¿½
 			qreal ligne_inter_x = (depart.x() + arrivee.x()) / 2.0;
 			t.lineTo(ligne_inter_x, depart.y());
 			t.lineTo(ligne_inter_x, arrivee.y());
 		} else if ((ori_depart == Terminal::Ouest || ori_depart == Terminal::Nord) && (ori_arrivee == Terminal::Ouest || ori_arrivee == Terminal::Nord)) {
-			t.lineTo(depart.x(), arrivee.y()); // cas « 2 »
-		} else t.lineTo(arrivee.x(), depart.y()); // cas « 1 »
+			t.lineTo(depart.x(), arrivee.y()); // cas Â« 2 Â»
+		} else t.lineTo(arrivee.x(), depart.y()); // cas Â« 1 Â»
 	}
  // end of trip
 	t.lineTo(arrivee);
@@ -147,25 +150,26 @@ bool Conductor::surLeMemeAxe(Terminal::Orientation a, Terminal::Orientation b) {
 }
 
 /**
-Indicates whether a terminal orientation is horizontal (East / West).
-@param a Terminal orientation
-@return True if the terminal orientation is horizontal, false otherwise
+	Indicates whether a terminal orientation is horizontal (East / West).
+	@Param has the orientation of terminal
+	@return true if the terminal orientation is horizontal, false otherwise
 */
 bool Conductor::estHorizontale(Terminal::Orientation a) {
 	return(a == Terminal::Est || a == Terminal::Ouest);
 }
 
 /**
-Indicates whether a terminal orientation is vertical (North / South).
-@param a Terminal orientation
-@return True if the terminal orientation is vertical, false otherwise
+	Indicates whether a terminal orientation is vertical (North / South).
+	@Param has the orientation of terminal
+	@Param has the orientation of terminal
+	@return True if the orientation of terminal is vertical, false otherwise
 */
 bool Conductor::estVerticale(Terminal::Orientation a) {
 	return(a == Terminal::Nord || a == Terminal::Sud);
 }
 
 /**
- Method of preparation for the destruction of the conductor; the conductor is detached from its two terminals
+Method of preparation to the destruction of the driver;The driver is detached from his two terminals
 */
 void Conductor::destroy() {
 	destroyed = true;
@@ -174,24 +178,24 @@ void Conductor::destroy() {
 }
 
 /**
- XML element validation method
- @param e A sense XML element represents a Driver
- @return true if the XML element does represent a Driver; false otherwise
+	ELEMENT VALIDATION METHOD XML
+	@param e an element XML Sense represents a driver
+	@return True if the XML element represents a driver well;false otherwise
 */
 bool Conductor::valideXml(QDomElement &e){
- // check the name of the tag
+	// verify the name of the tag
 	if (e.tagName() != "conductor") return(false);
 	
- // check the presence of minimal attributes
+	// check the presence of minimum attributes
 	if (!e.hasAttribute("terminal1")) return(false);
 	if (!e.hasAttribute("terminal2")) return(false);
 	
 	bool conv_ok;
- // parse the abscissa
+	// Parse the abscissa
 	e.attribute("terminal1").toInt(&conv_ok);
 	if (!conv_ok) return(false);
 	
- // parse the order
+	// Parse ordinate
 	e.attribute("terminal2").toInt(&conv_ok);
 	if (!conv_ok) return(false);
 	return(true);

@@ -165,12 +165,12 @@ void Terminal::paint(QPainter *p, const QStyleOptionGraphicsItem *, QWidget *) {
 	QPen t;
 	t.setWidthF(1.0);
 	
-	// dessin de la borne en rouge
+	// drawing the terminal in red
 	t.setColor(Qt::red);
 	p -> setPen(t);
 	p -> drawLine(f, e);
 	
-	// dessin du point d'amarrage au conducteur en bleu
+	// Drawing the driver mooring point in blue
 	t.setColor(couleur_hovered);
 	p -> setPen(t);
 	p -> setBrush(couleur_hovered);

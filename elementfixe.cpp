@@ -1,12 +1,12 @@
 #include "elementfixe.h"
 /**
-	Constructeur
+Manufacturer
 */
 FixedElement::FixedElement(QGraphicsItem *parent, Schema *scene) : Element(parent, scene) {
 }
 
 /**
-	@return Le nombre minimal de bornes que l'element peut avoir
+	@return the minimum number of terminals that the element can have
 */
 int FixedElement::nbBornesMin() const {
 	return(nbBornes());
@@ -20,10 +20,10 @@ int FixedElement::nbBornesMax() const {
 }
 
 /**
- XML import method. This method is called when importing XML content (pasting, importing, opening a file, etc.) so that the element can manage the import of its terminals itself. Here, as this class is characterized by a fixed number of bounds, the implementation requires to find exactly its bounds in the XML file.
- @param e The XML element to analyze.
- @param table_id_adr Reference to the correspondence table between the IDs of the XML file and the addresses in memory. If the import is successful, you have to add the right pairs (id, address).
- @return true if the import was successful, false otherwise
+	XML Import Method.This method is called during the import of XML content (paste, import, file opening ...) so that the element can manage itself the importation of its terminals.Here, as this class is characterized by a fixed number of terminals, the implementation requires to find exactly its terminals in the XML file.
+	@param e XML element to analyze.
+	@Param table_id_adr reference to the correspondence table between the IDS of the XML file and the addresses in memory.If import succeeds, you have to add the good couples (id, address).
+	@return true if the import has managed, false otherwise
 	
  */
 bool FixedElement::fromXml(QDomElement &e, QHash<int, Terminal *> &table_id_adr) {

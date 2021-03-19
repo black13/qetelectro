@@ -3,10 +3,10 @@
 ElementPerso::ElementPerso(QString &nom_fichier, QGraphicsItem *qgi, Schema *s, int *etat) : FixedElement(qgi, s) {
 	nomfichier = nom_fichier;
 	nb_bornes = 0;
-	// pessimisme inside : par defaut, ca foire
+	// pessimism inside: by default, it's fair
 	elmt_etat = -1;
 	
-	// The file must exist
+    // the file must exist
 	QString chemin_elements = "elements/";
 	nomfichier = chemin_elements + nom_fichier;
 	if (!QFileInfo(nomfichier).exists()) {
@@ -93,7 +93,7 @@ ElementPerso::ElementPerso(QString &nom_fichier, QGraphicsItem *qgi, Schema *s, 
 		return;
 	}
 	
-	// fermeture du file
+    // Closing the file
 	file.close();
 	
 	if (etat != NULL) *etat = 0;

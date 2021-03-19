@@ -31,12 +31,12 @@
 		void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
 		QRectF boundingRect() const;
 		
-		// methodes de manipulation des conducteurs lies a cette borne
+		// Methods of handling drivers related to this terminal
 		bool addConducteur(Conductor *);
 		void removeConducteur(Conductor *);
 		inline int nbConducteurs() { return(liste_conducteurs.size()); }
 		
-		// methodes de lecture
+		// read methods
 		QList<Conductor *> conducteurs() const; 
 		Terminal::Orientation orientation() const;
 		inline QPointF amarrageConducteur() const { return(mapToScene(amarrage_conducteur)); }
@@ -56,22 +56,22 @@
 		void mouseReleaseEvent(QGraphicsSceneMouseEvent *);
 		
 		private:
-		// pointeur vers la QGraphicsScene de type Schema (evite quelques casts en interne)
+		// pointer to the schema type QGraphicsscene (avoids some caste internally)
 		Schema *schema_scene;
-		// coordonnees des points d'amarrage
+		// coordinates mooring points
 		QPointF amarrage_conducteur;
 		QPointF amarrage_elmt;
-		// orientation de la borne
+		// Orientation of the terminal
 		Terminal::Orientation sens;
-		// liste des conducteurs lies a cette borne
+		// list of conductors linked at this terminal
 		QList<Conductor *> liste_conducteurs;
-		// pointeur vers un rectangle correspondant au bounding rect ; permet de ne calculer le bounding rect qu'une seule fois ; le pointeur c'est parce que le compilo exige une methode const
+		// pointer to a rectangle corresponding to the bounding rect;allows you to calculate the bounding rect only once;the pointer is because the compilo requires a constable method
 		QRectF *br;
 		Terminal *terminal_precedente;
 		bool hovered;
-		// methode initialisant les differents membres de la borne
+		// Method initiating the different members of the terminal
 		void initialise(QPointF, Terminal::Orientation);
-		// differentes couleurs utilisables pour l'effet "hover"
+		// different colors that can be used for the "hover" effect
 		QColor couleur_hovered;
 		QColor couleur_neutre;
 		QColor couleur_autorise;
