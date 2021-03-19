@@ -5,13 +5,13 @@
 	@param parent Le QObject parent de l'element.
 	@param scene  La scene sur laquelle l'element est affiche
 */
-Entree::Entree(QGraphicsItem *parent, Schema *scene) : ElementFixe(parent, scene) {
+Entree::Entree(QGraphicsItem *parent, Schema *scene) : FixedElement(parent, scene) {
 	// taille et hotspot
 	setSize(20, 40);
 	setHotspot(QPoint(10, 15));
 	
 	// ajout d'une borne a l'element
-	new Borne(0,  15, Borne::Sud, this, scene);
+	new Terminal(0,  15, Terminal::Sud, this, scene);
 }
 
 /**
@@ -27,6 +27,7 @@ int Entree::nbBornes() const {
 	@param o Les options de dessin
 */
 void Entree::paint(QPainter *p, const QStyleOptionGraphicsItem *) {
+	//int ret = _CrtDbgReportW(_CRT_ERROR, _CRT_WIDE(__FILE__), __LINE__, _CRT_WIDE(QT_VERSION_STR), reinterpret_cast<const wchar_t *> (QString::fromLatin1("video/").utf16()));
 	// traits de couleur noire
 	QPen t;
 	t.setColor(Qt::black);
@@ -55,7 +56,7 @@ void Entree::paint(QPainter *p, const QStyleOptionGraphicsItem *) {
 }
 
 /**
-	@return l'ID du type "Contacteur"
+	@return l'ID du type "Contactor"
 */
 QString Entree::typeId() {
 	return(QString("2"));

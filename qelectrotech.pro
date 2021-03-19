@@ -3,38 +3,40 @@
 ######################################################################
 
 TEMPLATE = app
-TARGET = 
+TARGET = qet
 DEPENDPATH += .
 INCLUDEPATH += .
 
 # Input
 HEADERS += aboutqet.h \
-           borne.h \
-           conducteur.h \
-           contacteur.h \
+           terminal.h \
+           conductor.h \
+           contactor.h \
            del.h \
            element.h \
-           elementfixe.h \
+           FixedElement.h \
            elementperso.h \
            entree.h \
            panelappareils.h \
            qetapp.h \
            schema.h \
-           schemavue.h
+           schemaview.h
 SOURCES += aboutqet.cpp \
-           borne.cpp \
-           conducteur.cpp \
-           contacteur.cpp \
+            terminal.cpp \
+           conductor.cpp \
+           contactor.cpp \
            del.cpp \
            element.cpp \
-           elementfixe.cpp \
+           FixedElement.cpp \
            elementperso.cpp \
            entree.cpp \
            main.cpp \
            panelappareils.cpp \
            qetapp.cpp \
            schema.cpp \
-           schemavue.cpp
+           schemaview.cpp
 RESOURCES += qelectrotech.qrc
 TRANSLATIONS += qet_en.ts
 QT += xml
+QT += widgets
+QT += printsupport

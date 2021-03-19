@@ -1,8 +1,8 @@
 #include "aboutqet.h"
 
 /**
-	Constructeur
-	@param parent Le QWidget parent de la boite de dialogue
+ Manufacturer
+ @param parent The parent QWidget of the dialog box
 */
 AboutQET::AboutQET(QWidget *parent) : QDialog(parent) {
 	// Titre, taille, comportement...
@@ -11,7 +11,7 @@ AboutQET::AboutQET(QWidget *parent) : QDialog(parent) {
 	setMinimumHeight(350);
 	setModal(true);
 	
-	// Trois onglets
+ // Three tabs
 	QTabWidget *onglets = new QTabWidget(this);
 	onglets -> addTab(ongletAPropos(), tr("\300 &propos"));
 	onglets -> addTab(ongletAuteurs(), tr("A&uteurs"));
@@ -31,7 +31,7 @@ AboutQET::AboutQET(QWidget *parent) : QDialog(parent) {
 }
 
 /**
-	@return Le titre QElectroTech avec son icone
+ @return The title QElectroTech with its icon
 */
 QWidget *AboutQET::titre() {
 	QWidget *icone_et_titre = new QWidget();
@@ -52,7 +52,7 @@ QWidget *AboutQET::titre() {
 }
 
 /**
-	@return Le widget contenu par l'onglet « A propos »
+ @return The widget contained by the About tab
 */
 QWidget *AboutQET::ongletAPropos() {
 	QLabel *apropos = new QLabel(
@@ -81,29 +81,29 @@ QWidget *AboutQET::ongletAuteurs() {
 }
 
 /**
-	@return Le widget contenu par l'onglet « Accord de Licence »
+ @return The widget contained by the License Agreement tab
 */
 QWidget *AboutQET::ongletLicence() {
 	QWidget *licence = new QWidget();
 	// label
 	QLabel *titre_licence = new QLabel(tr("Ce programme est sous licence GNU/GPL."));
 	
-	// Recuperation du texte de la GNU/GPL dans un fichier externe
+	// Recuperation du texte de la GNU/GPL dans un file externe
 	QFile *fichier_gpl = new QFile("./gnugpl.txt");
 	QString txt_gpl;
-	// verifie que le fichier existe
+	// verifie que le file existe
 	if (!fichier_gpl -> exists()) {
-		txt_gpl = QString(tr("Le fichier texte contenant la licence GNU/GPL est introuvable - bon bah de toute fa\347on, vous la connaissez par coeur non ?"));
+		txt_gpl = QString(tr("Le file texte contenant la licence GNU/GPL est introuvable - bon bah de toute fa\347on, vous la connaissez par coeur non ?"));
 	} else {
-		// ouvre le fichier en mode texte et en lecture seule
+		// ouvre le file en mode texte et en lecture seule
 		if (!fichier_gpl -> open(QIODevice::ReadOnly | QIODevice::Text)) {
-			txt_gpl = QString(tr("Le fichier texte contenant la licence GNU/GPL existe mais n'a pas pu \352tre ouvert - bon bah de toute fa\347on, vous la connaissez par coeur non ?"));
+			txt_gpl = QString(tr("Le file texte contenant la licence GNU/GPL existe mais n'a pas pu \352tre ouvert - bon bah de toute fa\347on, vous la connaissez par coeur non ?"));
 		} else {
-			// charge le contenu du fichier dans une QString
+			// charge le contenu du file dans une QString
 			QTextStream in(fichier_gpl);
 			txt_gpl = QString("");
 			while (!in.atEnd()) txt_gpl += in.readLine()+"\n";
-			// ferme le fichier
+			// ferme le file
 			fichier_gpl -> close();
 		}
 	}

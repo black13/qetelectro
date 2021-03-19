@@ -1,0 +1,31 @@
+<schema>
+    <elements>
+        <element x="-110" y="-270" sens="true" type="entree.elmt" selected="selected">
+            <bornes>
+                <borne x="0" y="11" id="0" orientation="1"/>
+            </bornes>
+        </element>
+        <element x="-100" y="-160" sens="true" type="del.elmt">
+            <bornes>
+                <borne x="0" y="4" id="1" orientation="0"/>
+                <borne x="0" y="56" id="2" orientation="1"/>
+            </bornes>
+        </element>
+        <element x="-290" y="-160" sens="true" type="entree.elmt">
+            <bornes>
+                <borne x="0" y="11" id="3" orientation="1"/>
+            </bornes>
+        </element>
+        <element x="-220" y="-130" sens="false" type="contacteur.elmt">
+            <bornes>
+                <borne x="0" y="4" id="4" orientation="0"/>
+                <borne x="0" y="56" id="5" orientation="1"/>
+            </bornes>
+        </element>
+    </elements>
+    <conducteurs>
+        <conducteur borne1="1" borne2="0"/>
+        <conducteur borne1="3" borne2="4"/>
+        <conducteur borne1="2" borne2="5"/>
+    </conducteurs>
+</schema>

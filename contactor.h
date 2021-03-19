@@ -1,16 +1,16 @@
-#ifndef DEL_H
-	#define DEL_H
+#ifndef CONTACTEUR_H
+	#define CONTACTEUR_H
 	#include "elementfixe.h"
 	/**
 	This class inherits from the Fixed Element class to define a
-	Light emitting diode
+	contactor
 	*/
-	class DEL : public FixedElement {
+	class Contactor : public FixedElement {
 		public:
-		DEL(QGraphicsItem * = 0, Schema * = 0);
+		Contactor(QGraphicsItem * = 0, Schema * = 0);
 		virtual int nbBornes() const;
 		void paint(QPainter *, const QStyleOptionGraphicsItem *);
 		QString typeId();
-		QString  nom() { return("DEL"); }
+		QString  nom() { return("Contactor"); }
 	};
 #endif
