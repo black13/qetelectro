@@ -1,25 +1,25 @@
 #ifndef BORNE_H
 	#define BORNE_H
 	#define TAILLE_BORNE 4
-	#include <QtGui>
-	#include <QtXml>
+	#include <QtWidgets>
+	#include <QtXml/QtXml>
 	class Conducteur;
 	class Element;
 	class Schema;
 	/**
-		Classe modelisant la « borne » d'un appareil, c'est-a-dire un
-		branchement possible pour un Conducteur.
+	Class modeling the "terminal" of a device, that is to say a
+	connection possible for a Driver.
 	*/
 	class Borne : public QGraphicsItem {
 		public:
-		// enum definissant l'orientation de la borne
+		// enum defining the orientation of the terminal
 		enum Orientation {Nord, Sud, Est, Ouest};
 		
-		// permet de caster un QGraphicsItem en Borne avec qgraphicsitem_cast
+		// allows to cast a QGraphicsItem in Terminal with qgraphicsitem_cast
 		enum { Type = UserType + 1002 };
     	virtual int type() const { return Type; }
 		
-		// constructeurs
+		// constructors
 		Borne();
 		Borne(QPointF,      Borne::Orientation, Element * = 0, Schema * = 0);
 		Borne(qreal, qreal, Borne::Orientation, Element * = 0, Schema * = 0);
@@ -31,23 +31,23 @@
 		void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
 		QRectF boundingRect() const;
 		
-		// methodes de manipulation des conducteurs lies a cette borne
+		// Methods of handling drivers related to this terminal
 		bool addConducteur(Conducteur *);
 		void removeConducteur(Conducteur *);
 		inline int nbConducteurs() { return(liste_conducteurs.size()); }
 		
-		// methodes de lecture
+		// read methods
 		QList<Conducteur *> conducteurs() const; 
 		Borne::Orientation orientation() const;
 		inline QPointF amarrageConducteur() const { return(mapToScene(amarrage_conducteur)); }
 		void updateConducteur();
 		
-		// methodes relatives a l'import/export au format XML
+		// methods relating to import / export in XML format
 		static bool valideXml(QDomElement  &);
 		bool        fromXml  (QDomElement  &);
 		QDomElement toXml    (QDomDocument &);
 		
-		// methodes de gestion des evenements
+		// event management methods
 		void hoverEnterEvent  (QGraphicsSceneHoverEvent *);
 		void hoverMoveEvent   (QGraphicsSceneHoverEvent *);
 		void hoverLeaveEvent  (QGraphicsSceneHoverEvent *);
@@ -56,22 +56,22 @@
 		void mouseReleaseEvent(QGraphicsSceneMouseEvent *);
 		
 		private:
-		// pointeur vers la QGraphicsScene de type Schema (evite quelques casts en interne)
+		// pointer to the schema type QGraphicsscene (avoids some caste internally)
 		Schema *schema_scene;
-		// coordonnees des points d'amarrage
+		// coordinates mooring points
 		QPointF amarrage_conducteur;
 		QPointF amarrage_elmt;
-		// orientation de la borne
+		// Orientation of the terminal
 		Borne::Orientation sens;
-		// liste des conducteurs lies a cette borne
+		// list of conductors linked at this terminal
 		QList<Conducteur *> liste_conducteurs;
-		// pointeur vers un rectangle correspondant au bounding rect ; permet de ne calculer le bounding rect qu'une seule fois ; le pointeur c'est parce que le compilo exige une methode const
+		// pointer to a rectangle corresponding to the bounding rect;allows you to calculate the bounding rect only once;the pointer is because the compilo requires a constable method
 		QRectF *br;
 		Borne *borne_precedente;
 		bool hovered;
-		// methode initialisant les differents membres de la borne
+		// Method initiating the different members of the terminal
 		void initialise(QPointF, Borne::Orientation);
-		// differentes couleurs utilisables pour l'effet "hover"
+		// different colors that can be used for the "hover" effect
 		QColor couleur_hovered;
 		QColor couleur_neutre;
 		QColor couleur_autorise;

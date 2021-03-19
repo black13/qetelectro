@@ -59,7 +59,8 @@ initializes a terminal
 @param e Element to which this terminal belongs
 @param s Scene on which this terminal appears
 */
-Terminal::Terminal(QPointF pf, Terminal::Orientation o, Element *e, Schema *s) : QGraphicsItem(e) {
+Terminal::Terminal(QPointF pf, Terminal::Orientation o, Element *e, Schema *s) : 
+QGraphicsItem(e) {
 	initialise(pf, o);
 	schema_scene = s;
 }
@@ -73,7 +74,9 @@ initializes a terminal
 @param e Element to which this terminal belongs
 @param s Scene on which this terminal appears
 */
-Terminal::Terminal(qreal pf_x, qreal pf_y, Terminal::Orientation o, Element *e, Schema *s) : QGraphicsItem(e) {
+Terminal::Terminal(qreal pf_x, qreal pf_y, 
+Terminal::Orientation o, Element *e, Schema *s) 
+: QGraphicsItem(e) {
 	initialise(QPointF(pf_x, pf_y), o);
 }
 
@@ -315,7 +318,8 @@ void Terminal::mouseReleaseEvent(QGraphicsSceneMouseEvent *e) {
 	terminal_precedente = NULL;
 	couleur_hovered  = couleur_neutre;
  // check that the scene is indeed a Schema
-	if (Schema *s = qobject_cast<Schema *>(scene())) {
+	if (Schema *s = qobject_cast<Schema *>(scene())) 
+	{
 
  // we stop drawing the driver preview
 		s -> poseConducteur(false);

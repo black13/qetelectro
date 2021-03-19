@@ -44,19 +44,21 @@ qt5_wrap_ui(UI_HEADERS mainwindow.ui)
 
 # Generate rules for building source files from the resources
 set(SOURCES aboutqet.cpp   
-contactor.cpp  
+conducteur.cpp
+contacteur.cpp
 element.cpp
 elementperso.cpp
 main.cpp
 qetapp.cpp
-schemaview.cpp
+schemavue.cpp
 conductor.cpp
 del.cpp
 elementfixe.cpp
 entree.cpp
 panelappareils.cpp
 schema.cpp
-terminal.cpp
+borne.cpp
+borne.h
 )
 
 add_executable(qet ${SOURCES})
