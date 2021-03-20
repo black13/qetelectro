@@ -117,7 +117,7 @@ Assign a conductor to the terminal
 @param f The conductor to be attached to this terminal
 */
 bool Borne::addConducteur(Conducteur *f) {
-	//trace_msg("");
+	trace_msg("");
 	// pointer 0 refuse
 	if (!f) return(false);
 	
