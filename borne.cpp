@@ -2,7 +2,7 @@
 #include "schema.h"
 #include "element.h"
 #include "conducteur.h"
-
+#include "debug.h"
 /**
 	
 Private function to initialize the terminal.

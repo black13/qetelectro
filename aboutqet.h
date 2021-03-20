@@ -3,7 +3,7 @@
 	#include <QtGui>
 	/**
 	This class represents the dialog box
-	About QELECTROTECH �
+	About QELECTROTECH
 	*/
 	class AboutQET : public QDialog {
 		Q_OBJECT

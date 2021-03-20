@@ -1,4 +1,5 @@
 #include "aboutqet.h"
+#include "debug.h"
 
 /**
 Builder
