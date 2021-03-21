@@ -1,7 +1,7 @@
 #include <QtDebug>
 #include "conducteur.h"
 #include "element.h"
-
+#include "debug.h"
 /**
 	Constructor
 	@param p1 first terminal to which the driver is linked
@@ -10,6 +10,7 @@
 	@Param Scene QGraphicsscene in which the driver belongs
 */
 Conducteur::Conducteur(Borne *p1, Borne* p2, Element *parent, QGraphicsScene *scene) : QGraphicsPathItem(parent, scene) {
+	trace_msg("");
 	// terminals that the driver connects
 	borne1 = p1;
 	borne2 = p2;
@@ -126,6 +127,7 @@ void Conducteur::calculeConducteur() {
 	@param qw the qwidget on which we draw
 */
 void Conducteur::paint(QPainter *qp, const QStyleOptionGraphicsItem *qsogi, QWidget *qw) {
+	trace_msg("");
 	qp -> save();
 	qp -> setRenderHint(QPainter::Antialiasing,          false);
 	qp -> setRenderHint(QPainter::TextAntialiasing,      false);
