@@ -1,0 +1,11 @@
+QObject::connect: No such slot QMdiArea::setActiveWindow(QWidget *) in C:\temp\qetelectro\qetapp.cpp:17
+QMetaObject::indexOfSignal: signal selectionChanged() from QGraphicsScene redefined in Schema
+{00000000-0000-0000-0000-000000000000}
+{00000000-0000-0000-0000-000000000000}
+QObject::connect: No such slot QMdiArea::tile() in C:\temp\qetelectro\qetapp.cpp:349
+QObject::connect: No such slot QMdiArea::cascade() in C:\temp\qetelectro\qetapp.cpp:350
+QObject::connect: No such slot QMdiArea::arrangeIcons() in C:\temp\qetelectro\qetapp.cpp:351
+QObject::connect: No such slot QMdiArea::activateNextWindow() in C:\temp\qetelectro\qetapp.cpp:352
+QObject::connect: No such slot QMdiArea::activatePreviousWindow() in C:\temp\qetelectro\qetapp.cpp:353
+"Nouveau sch?ma[*]"
+QObject::connect: No such signal QMdiArea::windowActivated(QWidget *) in C:\temp\qetelectro\qetapp.cpp:101

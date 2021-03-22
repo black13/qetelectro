@@ -1,4 +1,5 @@
- cmake_minimum_required(VERSION 3.9)
+#"c:\Program Files\CMake\bin\cmake.exe"  -G "Visual Studio 14 2015" -D CMAKE_PREFIX_PATH="C:\Qt\Qt-5.15.2\lib\cmake" ..
+cmake_minimum_required(VERSION 3.9)
 
 project(qet)
 
@@ -9,9 +10,9 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
+set(CMAKE_BUILD_TYPE DEBUG)
 
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
 find_package(Qt5 COMPONENTS Core Widgets Svg REQUIRED)
 
