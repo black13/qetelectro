@@ -63,6 +63,20 @@ panelappareils.cpp
 schema.cpp
 borne.cpp
 borne.h
+aboutqet.h
+del.h
+elementperso.h
+qetapp.h
+schemavue.h
+borne.h
+contacteur.h
+element.h
+entree.h
+schema.h
+conducteur.h
+debug.h
+elementfixe.h
+panelappareils.h
 )
 
 add_executable(qet ${SOURCES})

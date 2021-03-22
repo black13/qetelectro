@@ -9,7 +9,7 @@
 	@Param Parent Element of the driver (0 by default)
 	@Param Scene QGraphicsscene in which the driver belongs
 */
-Conducteur::Conducteur(Borne *p1, Borne* p2, Element *parent, QGraphicsScene *scene) : QGraphicsPathItem(parent) {
+Conducteur::Conducteur(Borne *p1, Borne* p2) : QGraphicsPathItem() {
 	// terminals that the conductor connects
 	borne1 = p1;
 	borne2 = p2;

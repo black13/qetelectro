@@ -18,10 +18,10 @@
 		SchemaVue();
 		SchemaVue(QWidget * = 0);
 		
-		// nouveaux attributs
+		// new attributes
 		Schema *scene;
 		
-		// methodes publiques
+		// public methods
 		bool antialiased() const;
 		void setAntialiasing(bool);
 		bool ouvrir(QString, int * = NULL);

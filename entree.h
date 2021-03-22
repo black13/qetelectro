@@ -7,7 +7,7 @@
 	*/
 	class Entree : public ElementFixe{
 		public:
-		Entree(QGraphicsItem * = 0, Schema * = 0);
+		Entree(QGraphicsItem * = 0);
 		virtual int nbBornes() const;
 		void paint(QPainter *, const QStyleOptionGraphicsItem *);
 		QString typeId();

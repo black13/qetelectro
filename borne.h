@@ -21,8 +21,8 @@
 		
 		// constructors
 		Borne();
-		Borne(QPointF,      Borne::Orientation, Element * = 0, Schema * = 0);
-		Borne(qreal, qreal, Borne::Orientation, Element * = 0, Schema * = 0);
+		Borne(QPointF,      Borne::Orientation, Element * = 0);
+		Borne(qreal, qreal, Borne::Orientation, Element * = 0);
 		
 		// destructeur
 		~Borne();
@@ -57,7 +57,7 @@
 		
 		private:
 		// pointer to the schema type QGraphicsscene (avoids some caste internally)
-		Schema *schema_scene;
+		//Schema *schema_scene;
 		// coordinates mooring points
 		QPointF amarrage_conducteur;
 		QPointF amarrage_elmt;

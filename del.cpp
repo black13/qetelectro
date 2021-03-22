@@ -7,14 +7,14 @@
 	@param parent Le QObject parent de l'element.
 	@param scene  La scene sur laquelle l'element est affiche
  */
-DEL::DEL(QGraphicsItem *parent, Schema *scene) : ElementFixe(parent, scene) {
+DEL::DEL(QGraphicsItem *parent) : ElementFixe(parent) {
 	// taille et hotspot
 	setSize(30, 70);
 	setHotspot(QPoint(15, 5));
 	
 	// ajout de deux bornes a l'element
-	new Borne(0,  0, Borne::Nord, this, scene);
-	new Borne(0, 60, Borne::Sud,  this, scene);
+	new Borne(0,  0, Borne::Nord, this);
+	new Borne(0, 60, Borne::Sud,  this);
 	
 	peut_relier_ses_propres_bornes = true;
 }

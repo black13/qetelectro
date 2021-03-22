@@ -274,7 +274,7 @@ bool Schema::fromXml(QDomDocument &document, QPointF position) {
 					bool peut_poser_conducteur = true;
 					bool cia = ((Element *)p2 -> parentItem()) -> connexionsInternesAcceptees();
 					if (!cia) foreach(QGraphicsItem *item, p2 -> parentItem() -> childItems()) if (item == p1) peut_poser_conducteur = false;
-					if (peut_poser_conducteur) new Conducteur(table_adr_id.value(id_p1), table_adr_id.value(id_p2), 0, this);
+					if (peut_poser_conducteur) new Conducteur(table_adr_id.value(id_p1), table_adr_id.value(id_p2));
 				}
 			} else qDebug() << "Le chargement du conductor" << id_p1 << id_p2 << "a echoue";
 		}
@@ -292,7 +292,7 @@ Element *Schema::elementFromXml(QDomElement &e, QHash<int, Borne *> &table_id_ad
 	// Creates an element whose type corresponds to the type ID
 	QString type = e.attribute("type");
 	int etat;
-	Element *nvel_elmt = new ElementPerso(type, 0, 0, &etat);
+	Element *nvel_elmt = new ElementPerso(type, 0, &etat);
 	/*switch(e.attribute("type").toInt()) {
 		case 0: nvel_elmt = new Contactor(); break;
 		case 1: nvel_elmt = new DEL();        break;

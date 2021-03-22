@@ -7,7 +7,7 @@
 /**
 Builder for an element without a scene or parent
 */
-Element::Element(QGraphicsItem *parent, Schema *scene) : QGraphicsItem(parent) {
+Element::Element(QGraphicsItem *parent) : QGraphicsItem(parent) {
 	sens = true;
 	peut_relier_ses_propres_bornes = false;
 }

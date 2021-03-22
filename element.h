@@ -7,7 +7,7 @@
 		public:
 		enum { Type = UserType + 1000 };
     	virtual int type() const { return Type; }
-		Element(QGraphicsItem * = 0, Schema * = 0);
+		Element(QGraphicsItem * = 0);
 		
 		virtual  int nbBornes()    const = 0;
 		virtual  int nbBornesMin() const = 0;

@@ -1,3 +1,5 @@
+#include <QPrinter>
+#include <QPainter>
 #include <QApplication>
 #include <QTranslator>
 #include "qetapp.h"

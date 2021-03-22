@@ -40,7 +40,7 @@ PanelAppareils::PanelAppareils(QWidget *parent) :  QListWidget(parent) {
 	QStringList files = dossier_elements.entryList(filtres, QDir::Files, QDir::Name);
 	foreach(QString file, files) {
 		int etat;
-		ElementPerso *elmt_perso = new ElementPerso(file, 0, 0, &etat);
+		ElementPerso *elmt_perso = new ElementPerso(file, 0, &etat);
 		if (etat != 0) {
 			qDebug() << "Component loading" << file << "failed with error code" << etat;
 			continue;
@@ -90,7 +90,7 @@ void PanelAppareils::startDrag(Qt::DropActions /*supportedActions*/) {
 	Element *appar;
 	int etat;
 	QString nom_fichier = currentItem() -> data(42).toString();
-	appar = new ElementPerso(nom_fichier, 0, 0, &etat);
+	appar = new ElementPerso(nom_fichier, 0, &etat);
 	if (etat != 0) {
 		delete appar;
 		return;

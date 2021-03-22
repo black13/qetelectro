@@ -7,7 +7,7 @@
 	*/
 	class DEL : public ElementFixe {
 		public:
-		DEL(QGraphicsItem * = 0, Schema * = 0);
+		DEL(QGraphicsItem * = 0);
 		virtual int nbBornes() const;
 		void paint(QPainter *, const QStyleOptionGraphicsItem *);
 		QString typeId();

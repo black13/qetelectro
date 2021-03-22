@@ -10,7 +10,7 @@
 		public:
 		enum { Type = UserType + 1001 };
     	virtual int type() const { return Type; }
-		Conducteur(Borne *, Borne *, Element * = 0, QGraphicsScene * = 0);
+		Conducteur(Borne *, Borne *);
 		//virtual ~Conducteur();
 		
 		void destroy();

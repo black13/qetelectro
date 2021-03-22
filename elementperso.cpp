@@ -1,6 +1,6 @@
 #include "elementperso.h"
 
-ElementPerso::ElementPerso(QString &nom_fichier, QGraphicsItem *qgi, Schema *s, int *etat) : ElementFixe(qgi, s) {
+ElementPerso::ElementPerso(QString &nom_fichier, QGraphicsItem *qgi, int *etat) : ElementFixe(qgi) {
 	nomfichier = nom_fichier;
 	nb_bornes = 0;
 	// pessimism inside: by default, it's fair
@@ -77,7 +77,7 @@ ElementPerso::ElementPerso(QString &nom_fichier, QGraphicsItem *qgi, Schema *s, 
 	for (QDomNode node = racine.firstChild() ; !node.isNull() ; node = node.nextSibling()) {
 		QDomElement elmts = node.toElement();
 		if(elmts.isNull()) continue;
-		if (parseElement(elmts, qp, s)) ++ nb_elements_parses;
+		if (parseElement(elmts, qp)) ++ nb_elements_parses;
 		else {
 			if (etat != NULL) *etat = 7;
 			elmt_etat = 7;
@@ -108,8 +108,8 @@ void ElementPerso::paint(QPainter *qp, const QStyleOptionGraphicsItem *) {
 	dessin.play(qp);
 }
 
-bool ElementPerso::parseElement(QDomElement &e, QPainter &qp, Schema *s) {
-	if (e.tagName() == "borne") return(parseBorne(e, s));
+bool ElementPerso::parseElement(QDomElement &e, QPainter &qp) {
+	if (e.tagName() == "borne") return(parseBorne(e));
 	else if (e.tagName() == "ligne") return(parseLigne(e, qp));
 	else if (e.tagName() == "cercle") return(parseCercle(e, qp));
 	else if (e.tagName() == "polygone") return(parsePolygone(e, qp));
@@ -162,7 +162,7 @@ bool ElementPerso::parsePolygone(QDomElement &e, QPainter &qp) {
 	return(true);
 }
 
-bool ElementPerso::parseBorne(QDomElement &e, Schema *s) {
+bool ElementPerso::parseBorne(QDomElement &e) {
  // check the presence and validity of mandatory attributes
 	int bornex, borney;
 	Borne::Orientation borneo;
@@ -174,7 +174,7 @@ bool ElementPerso::parseBorne(QDomElement &e, Schema *s) {
 	else if (e.attribute("orientation") == "e") borneo = Borne::Est;
 	else if (e.attribute("orientation") == "o") borneo = Borne::Ouest;
 	else return(false);
-	new Borne(bornex, borney, borneo, this, s);
+	new Borne(bornex, borney, borneo, this);
 	++ nb_bornes;
 	return(true);
 }

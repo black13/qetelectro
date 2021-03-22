@@ -5,14 +5,14 @@
 	@Param parent The parent QObject of the element.
 	@Param scene the scene on which the element is displays
 */
-Contacteur::Contacteur(QGraphicsItem *parent, Schema *scene) : ElementFixe(parent, scene) {
+Contacteur::Contacteur(QGraphicsItem *parent) : ElementFixe(parent) {
  // size and hotspot
 	setSize(15, 70);
 	setHotspot(QPoint(10, 5));
 	
 	// ajout de deux bornes a l'element
-	new Borne(0,  0, Borne::Nord, this, scene);
-	new Borne(0, 60, Borne::Sud,  this, scene);
+	new Borne(0,  0, Borne::Nord, this);
+	new Borne(0, 60, Borne::Sud,  this);
 }
 
 /**

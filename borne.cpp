@@ -48,7 +48,7 @@ void Borne::initialise(QPointF pf, Borne::Orientation o) {
 */
 Borne::Borne() : QGraphicsItem() {
 	initialise(QPointF(0.0, 0.0), Borne::Sud);
-	schema_scene = 0;
+	//schema_scene = 0;
 }
 
 /**
@@ -58,10 +58,10 @@ initializes a terminal
 @param e Element to which this terminal belongs
 @param s Scene on which this terminal appears
 */
-Borne::Borne(QPointF pf, Borne::Orientation o, Element *e, Schema *s) : 
+Borne::Borne(QPointF pf, Borne::Orientation o, Element *e) : 
 QGraphicsItem(e) {
 	initialise(pf, o);
-	schema_scene = s;
+	//schema_scene = s;
 }
 
 /**
@@ -73,8 +73,7 @@ initializes a terminal
 @param e Element to which this terminal belongs
 @param s Scene on which this terminal appears
 */
-Borne::Borne(qreal pf_x, qreal pf_y, 
-Borne::Orientation o, Element *e, Schema *s) 
+Borne::Borne(qreal pf_x, qreal pf_y,Borne::Orientation o, Element *e) 
 : QGraphicsItem(e) {
 	initialise(QPointF(pf_x, pf_y), o);
 }
@@ -335,7 +334,7 @@ void Borne::mouseReleaseEvent(QGraphicsSceneMouseEvent *e) {
  // last check: check that this terminal is not already linked to the other terminal
 		foreach (Conducteur *f, liste_conducteurs) if (f ->borne1 == p || f ->borne2 == p) return;
  // otherwise, we put a conductor
-		new Conducteur(this, (Borne *)qgi, 0, scene());
+		new Conducteur(this, (Borne *)qgi);
 	}
 }
 
