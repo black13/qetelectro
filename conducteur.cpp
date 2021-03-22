@@ -1,7 +1,7 @@
 #include <QtDebug>
 #include "conducteur.h"
 #include "element.h"
-
+#include "debug.h"
 /**
 	Constructor
 	@param p1 first terminal to which the driver is linked
@@ -11,6 +11,7 @@
 */
 Conducteur::Conducteur(Borne *p1, Borne* p2) : QGraphicsPathItem() {
 	// terminals that the conductor connects
+	trace_msg("");
 	borne1 = p1;
 	borne2 = p2;
 	// add the conductor to the list of conductors for each of the two terminals
@@ -86,27 +87,28 @@ void Conducteur::calculeConducteur() {
 	if (depart.y() < arrivee.y()) {
 		// downhide
 		if ((ori_depart == Borne::Nord && (ori_arrivee == Borne::Sud || ori_arrivee == Borne::Ouest)) || (ori_depart == Borne::Est && ori_arrivee == Borne::Ouest)) {
-		// case � 3 �
+		// case  3 
 			qreal ligne_inter_x = (depart.x() + arrivee.x()) / 2.0;
 			t.lineTo(ligne_inter_x, depart.y());
 			t.lineTo(ligne_inter_x, arrivee.y());
-		} else if ((ori_depart == Borne::Sud && (ori_arrivee == Borne::Nord || ori_arrivee == Borne::Est)) || (ori_depart == Borne::Ouest && ori_arrivee == Borne::Est)) {
- // case   4  
+		} 
+		else if ((ori_depart == Borne::Sud && (ori_arrivee == Borne::Nord || ori_arrivee == Borne::Est)) || (ori_depart == Borne::Ouest && ori_arrivee == Borne::Est)) {
+		// case   4  
 			qreal ligne_inter_y = (depart.y() + arrivee.y()) / 2.0;
 			t.lineTo(depart.x(), ligne_inter_y);
 			t.lineTo(arrivee.x(), ligne_inter_y);
 		} else if ((ori_depart == Borne::Nord || ori_depart == Borne::Est) && (ori_arrivee == Borne::Nord || ori_arrivee == Borne::Est)) {
 			t.lineTo(arrivee.x(), depart.y()); // cas « 2 »
 		} else t.lineTo(depart.x(), arrivee.y()); // cas « 1 »
-	} else {
+		} else {
 		// trajet montant
 		if ((ori_depart == Borne::Ouest && (ori_arrivee == Borne::Est || ori_arrivee == Borne::Sud)) || (ori_depart == Borne::Nord && ori_arrivee == Borne::Sud)) {
-		// case � 3 �
+		// case  3 
 			qreal ligne_inter_y = (depart.y() + arrivee.y()) / 2.0;
 			t.lineTo(depart.x(), ligne_inter_y);
 			t.lineTo(arrivee.x(), ligne_inter_y);
 		} else if ((ori_depart == Borne::Est && (ori_arrivee == Borne::Ouest || ori_arrivee == Borne::Nord)) || (ori_depart == Borne::Sud && ori_arrivee == Borne::Nord)) {
-		// case � 4 �
+		// case  4 
 			qreal ligne_inter_x = (depart.x() + arrivee.x()) / 2.0;
 			t.lineTo(ligne_inter_x, depart.y());
 			t.lineTo(ligne_inter_x, arrivee.y());

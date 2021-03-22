@@ -1,11 +1,13 @@
 #include "entree.h"
-
+#include "debug.h"
 /**
 	Constructor 
 	@Param parent The parent QObject of the element.
 	@Param scene the scene on which the element is displays
 */
-Entree::Entree(QGraphicsItem *parent) : ElementFixe(parent) {
+Entree::Entree(QGraphicsItem *parent) : ElementFixe(parent) 
+{
+
 	// size and hotspot
 	setSize(20, 40);
 	setHotspot(QPoint(10, 15));
@@ -29,6 +31,7 @@ int Entree::nbBornes() const {
 void Entree::paint(QPainter *p, const QStyleOptionGraphicsItem *) {
 	//int ret = _CrtDbgReportW(_CRT_ERROR, _CRT_WIDE(__FILE__), __LINE__, _CRT_WIDE(QT_VERSION_STR), reinterpret_cast<const wchar_t *> (QString::fromLatin1("video/").utf16()));
 	// Black color traits
+	trace_msg("");
 	QPen t;
 	t.setColor(Qt::black);
 	t.setWidthF(1.0);

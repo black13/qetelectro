@@ -6,7 +6,7 @@
 #include "entree.h"
 
 /**
-	Initialise le SchemaVue
+	Initializes the schemavue
 */
 void SchemaVue::initialise() {
 	setInteractive(true);
@@ -19,31 +19,31 @@ void SchemaVue::initialise() {
 }
 
 /**
-	Constructeur par defaut
+	Default builder
 */
 SchemaVue::SchemaVue() : QGraphicsView() {
 	initialise();
 }
 
 /**
-	Constructeur
-	@param parent Le QWidegt parent de cette vue de schema
+	Manufacturer
+	@param parent the parent qwidegt of this scheme view
 */
 SchemaVue::SchemaVue(QWidget *parent) : QGraphicsView(parent) {
 	initialise();
 }
 
 /**
-	Permet de savoir si le rendu graphique du SchemaVue est antialiase ou non.
-	@return Un booleen indiquant si le SchemaVue est antialiase
+	Lets you know if the graphic rendering of the schemavue is antialiasis or not.
+	@return a booleen indicating whether the schemavue is antialiasis
 */
 bool SchemaVue::antialiased() const {
 	return(antialiasing);
 }
 
 /**
-	Active ou desactive l'antialiasing pour le rendu graphique du SchemaVue.
-	@param aa un booleen indiquant si le SchemaVue doit etre antialiase ou non
+	Active or disable the antialiasing for the graphic rendering of the schemavue.
+	@Param has a booleen indicating whether the scheme view must be antialiased or not
 */
 void SchemaVue::setAntialiasing(bool aa) {
 	antialiasing = aa;
@@ -54,8 +54,8 @@ void SchemaVue::setAntialiasing(bool aa) {
 }
 
 /**
-	appelle la methode select sur tous les elements de la liste d'elements
-	@todo modifier selectAll pour l'integration des conducteurs
+	calls the SELECT method on all elements of the list of elements
+	@todo Edit Selectall for Integration of Drivers
 */
 void SchemaVue::selectAll() {
 	if (scene -> items().isEmpty()) return;
@@ -63,8 +63,8 @@ void SchemaVue::selectAll() {
 }
 
 /**
-	appelle la methode deselect sur tous les elements de la liste d'elements
-	@todo modifier selectNothing pour l'integration des conducteurs
+	Calls the Delect method on all elements of the list of elements
+	@todo modify selectnothing for the integration of drivers
 */
 void SchemaVue::selectNothing() {
 	if (scene -> items().isEmpty()) return;
@@ -72,8 +72,8 @@ void SchemaVue::selectNothing() {
 }
 
 /**
-	Inverse l'etat de selection de tous les elements de la liste d'elements
-	@todo modifier selectInvert pour l'integration des conducteurs
+	Reverses the selection state of all elements of the list of elements
+	@todo Edit Selectinvert for Integration of Drivers
  */
 void SchemaVue::selectInvert() {
 	if (scene -> items().isEmpty()) return;
@@ -90,11 +90,11 @@ void SchemaVue::supprimer() {
 	// useless but careful : creating two lists : one for wires, one for elements
 	foreach (QGraphicsItem *qgi, scene -> selectedItems()) {
 		if (!garbage_elmt.contains(qgi)) garbage_elmt.append(qgi);
-		// pour chaque enfant de l'element
+		// For each child of the element
 		foreach (QGraphicsItem *child, qgi -> childItems()) {
-			// si cet enfant est une borne
+			// if this child is a terminal
 			if (Borne *p = qgraphicsitem_cast<Borne *>(child)) {
-				// alors chaque conducteur de la borne est recense
+				// then each driver of the terminal is listed
 				foreach (Conducteur *f, p -> conducteurs()) {
 					if (!garbage_conducteurs.contains(f)) garbage_conducteurs.append(f);
 				}
@@ -122,11 +122,11 @@ void SchemaVue::supprimer() {
 }
 
 /**
-	Envoie un item vers le "garbage" pour qu'il soit supprime plus tard
+	Send an item to the "garbage" so that it is deleted later
 	@param qgi L'item a supprimer
 */
 void SchemaVue::throwToGarbage(QGraphicsItem *qgi) {
-	// pas de doublon dans le garbage (sinon ca va sentir la segfault)
+	// No duplicate in the garbage (otherwise it will feel the segfault)
 	bool qgi_deja_dans_le_garbage = false;
 	foreach(QGraphicsItem *gbg_qgi, garbage) {
 		if ((void *)gbg_qgi == (void *)qgi) {
@@ -138,7 +138,7 @@ void SchemaVue::throwToGarbage(QGraphicsItem *qgi) {
 }
 
 /**
-	Supprime tous les elements du "garbage"
+	Deletes all the elements of the "garbage"
 */
 void SchemaVue::flushGarbage() {
 	foreach(QGraphicsItem *qgi, garbage) {
@@ -148,7 +148,7 @@ void SchemaVue::flushGarbage() {
 }
 
 /**
-	Pivote les composants selectionnes
+	Pivot the selection components
 */
 void SchemaVue::pivoter() {
 	if (scene -> selectedItems().isEmpty()) return;
@@ -161,9 +161,9 @@ void SchemaVue::pivoter() {
 }
 
 /**
-	accepte ou refuse le drag'n drop en fonction du type de donnees entrant
-	@param e le QDragEnterEvent correspondant au drag'n drop tente
-	@todo trouver un MIME Type plus adapte
+	Accepts or refuses Drag'n Drop according to the type of incoming data
+	@param e the QDragénterevent corresponding to the Drag'n Drop tent
+	@todo Find a mime more adaptive
 */
 void SchemaVue::dragEnterEvent(QDragEnterEvent *e) {
 	if (e -> mimeData() -> hasFormat("text/plain")) e -> acceptProposedAction();
@@ -177,8 +177,8 @@ void SchemaVue::dragEnterEvent(QDragEnterEvent *e) {
 void SchemaVue::dragLeaveEvent(QDragLeaveEvent *) {}
 
 /**
-	accepte ou refuse le drag'n drop en fonction du type de donnees entrant
-	@param e le QDragMoveEvent correspondant au drag'n drop tente
+	Accepts or refuses Drag'n Drop according to the type of incoming data
+	@param e the QDragmoveEvent corresponding to the Drag'n Drop tent
 */
 void SchemaVue::dragMoveEvent(QDragMoveEvent *e) {
 	if (e -> mimeData() -> hasFormat("text/plain")) e -> acceptProposedAction();
@@ -186,9 +186,9 @@ void SchemaVue::dragMoveEvent(QDragMoveEvent *e) {
 }
 
 /**
-	gere les depots (drop) acceptes sur le Schema
-	@param e le QDropEvent correspondant au drag'n drop effectue
-	@todo Ajouter directement l'objet Element a la scene lorsque le drag'n drop aura ete ameliore
+	GERE THE DEPOSITS (DROP) ACCEPTED ON THE SCHEMA
+	@param e the QDRopevent corresponding to the Drag'n Drop carries out
+	@todo add directly the object to the scene when the Drag'n Drop will have been improved
 */
 void SchemaVue::dropEvent(QDropEvent *e) {
 	QString fichier = e -> mimeData() -> text();
@@ -203,7 +203,7 @@ void SchemaVue::dropEvent(QDropEvent *e) {
 }
 
 /**
-	Passe le Schema en mode visualisation
+	Pass the schema in visualization mode
 */
 void SchemaVue::setVisualisationMode() {
 	setDragMode(ScrollHandDrag);
@@ -211,7 +211,7 @@ void SchemaVue::setVisualisationMode() {
 }
 
 /**
-	Passe le Schema en mode Selection
+	Pass the schema in Selection mode
 */
 void SchemaVue::setSelectionMode() {
 	setDragMode(RubberBandDrag);
@@ -220,23 +220,23 @@ void SchemaVue::setSelectionMode() {
 }
 
 /**
-	Agrandit le schema (+33% = inverse des -25 % de zoomMoins())
+	Enlarge the schema (+ 33% = reverse of -25% zomons ())
 */
 void SchemaVue::zoomPlus() {
 	scale(4.0/3.0, 4.0/3.0);
 }
 
 /**
-	Retrecit le schema (-25% = inverse des +33 % de zoomPlus())
+	Retreciate the schema (-25% = reverse of +33% of Zoomomlus ())
 */
 void SchemaVue::zoomMoins() {
 	scale(0.75, 0.75);
 }
 
 /**
-	Agrandit ou rectrecit le schema de facon a ce que tous les elements du
-	schema soient visibles a l'ecran. S'il n'y a aucun element sur le schema,
-	le zoom est reinitialise
+	Enlarge or rectified the schema in fact to what all the elements of the
+	Schema is visible to the screen.If there is no element on the schema,
+	The zoom is reinitialized
 */
 void SchemaVue::zoomFit() {
 	if (scene -> items().isEmpty()) {
@@ -260,7 +260,7 @@ void SchemaVue::zoomReset() {
 }
 
 /**
-	copie les elements selectionnes du schema dans le presse-papier puis les supprime
+Copy the selected elements of the scheme in the clipboard and then removes them
 */
 void SchemaVue::couper() {
 	copier();
@@ -268,7 +268,7 @@ void SchemaVue::couper() {
 }
 
 /**
-	copie les elements selectionnes du schema dans le presse-papier
+Copy the selection elements of the scheme in the clipboard
 */
 void SchemaVue::copier() {
 	QClipboard *presse_papier = QApplication::clipboard();
@@ -278,7 +278,7 @@ void SchemaVue::copier() {
 }
 
 /**
-	importe les elements contenus dans le presse-papier dans le schema
+imports the elements contained in the clipboard in the scheme
 */
 void SchemaVue::coller() {
 	QString texte_presse_papier;
@@ -289,7 +289,7 @@ void SchemaVue::coller() {
 }
 
 /**
-	gere les clics et plus particulierement le clic du milieu (= coller pour X11)
+Gera clicks and more especially the middle click (= Paste for x11)
 */
 void SchemaVue::mousePressEvent(QMouseEvent *e) {
 	if (e -> buttons() == Qt::MidButton) {
@@ -303,26 +303,26 @@ void SchemaVue::mousePressEvent(QMouseEvent *e) {
 }
 
 /**
-	Ouvre un fichier *.qet dans cette SchemaVue
-	@param nom_fichier Nom du fichier a ouvrir
-	@param erreur Si le pointeur est specifie, cet entier est mis a 0 en cas de reussite de l'ouverture, 1 si le fichier n'existe pas, 2 si le fichier n'est pas lisible, 3 si le fichier n'est pas un element XML, 4 si l'ouverture du fichier a echoue pour une autre raison (c'est pas ca qui manque ^^)
-	@return true si l'ouverture a reussi, false sinon
+Opens a * .QET file in this schemavue
+@param file_name file name to open
+@param error if the pointer is specified, this integer is set to 0 in case of success of the opening, 1 if the file does not exist, 2 if the file is not readable, 3 if the file is notnot an XML element, 4 if the opening of the file has echoue for another reason (it's not that miss ^^)
+@return true if the opening has managed, false otherwise
 */
 bool SchemaVue::ouvrir(QString n_fichier, int *erreur) {
-	// verifie l'existence du fichier
+	// check the existence of the file
 	if (!QFileInfo(n_fichier).exists()) {
 		if (erreur != NULL) *erreur = 1;
 		return(false);
 	}
 	
-	// ouvre le fichier
+	// Open the file
 	QFile fichier(n_fichier);
 	if (!fichier.open(QIODevice::ReadOnly)) {
 		if (erreur != NULL) *erreur = 2;
 		return(false);
 	}
 	
-	// lit son contenu dans un QDomDocument
+	// reads its contents in a QdomDocument
 	QDomDocument document;
 	if (!document.setContent(&fichier)) {
 		if (erreur != NULL) *erreur = 3;
@@ -331,7 +331,7 @@ bool SchemaVue::ouvrir(QString n_fichier, int *erreur) {
 	}
 	fichier.close();
 	
-	// construit le schema a partir du QDomDocument
+	// Construct the Scheme The QomDoComent Party
 	QDomDocument &doc = document;
 	if (scene -> fromXml(doc)) {
 		if (erreur != NULL) *erreur = 0;
@@ -349,11 +349,11 @@ void SchemaVue::slot_selectionChanged() {
 }
 
 void SchemaVue::closeEvent(QCloseEvent *event) {
-	// demande d'abord a l'utilisateur s'il veut enregistrer le schema en cours
+	// ask the user first if he wants to register the current schema
 	QMessageBox::StandardButton reponse = QMessageBox::question(
 		this,
-		tr("Enregistrer le sch\351ma en cours ?"),
-		tr("Voulez-vous enregistrer le sch\351ma en cours ?"),
+		tr("Save the current schema?"),
+		tr("Do you want to save the current schema?"),
 		QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel,
 		QMessageBox::Cancel
 	);
@@ -368,9 +368,9 @@ void SchemaVue::closeEvent(QCloseEvent *event) {
 }
 
 /**
-	Methode enregistrant le schema dans le dernier nom de fichier connu.
-	Si aucun nom de fichier n'est connu, cette methode appelle la methode enregistrer_sous
-	@return true si l'enregistrement a reussi, false sinon
+	Method recording the schema in the last known file name.
+	If no file name is known, this method calls the register_sous method
+	@return True if the re-registrationming, FALSE SINON
 */
 bool SchemaVue::enregistrer() {
 	if (nom_fichier == QString()) return(enregistrer_sous());
@@ -378,13 +378,13 @@ bool SchemaVue::enregistrer() {
 }
 
 /**
-	Cette methode demande un nom de fichier a l'utilisateur pour enregistrer le schema
-	Si aucun nom n'est entre, elle renvoie faux.
-	Si le nom ne se termine pas par l'extension .qet, celle-ci est ajoutee.
-	Si l'enregistrement reussit, le nom du fichier est conserve et la fonction renvoie true.
-	Sinon, faux est renvoye.
-	@return true si l'enregistrement a reussi, false sinon
-	@todo detecter le chemin du bureau automatiquement
+	This method requires a file name to the user to save the schema
+	If no name is between, it returns false.
+	If the name does not end with the .qet extension, it is added.
+	If the successful recording, the file name is kept and the function returns True.
+	Otherwise, false is returned.
+	@return True if the re-registrationming, FALSE SINON
+	@todo Detect the office path automatically
 */
 bool SchemaVue::enregistrer_sous() {
 	// demande un nom de fichier a l'utilisateur pour enregistrer le schema
@@ -394,27 +394,28 @@ bool SchemaVue::enregistrer_sous() {
 		QDir::homePath(),
 		tr("Schema QelectroTech (*.qet)")
 	);
-	// si aucun nom n'est entre, renvoie faux.
+	// If no name is between, returns false.
 	if (n_fichier == "") return(false);
-	// si le nom ne se termine pas par l'extension .qet, celle-ci est ajoutee
+	// if the name does not end with the extension .qet, it is added
 	if (!n_fichier.endsWith(".qet", Qt::CaseInsensitive)) n_fichier += ".qet";
-	// tente d'enregistrer le fichier
+	// tries to save the file
 	bool resultat_enregistrement = private_enregistrer(n_fichier);
-	// si l'enregistrement reussit, le nom du fichier est conserve
+	// if the successful recording, the file name is retained
 	if (resultat_enregistrement) {
 		nom_fichier = n_fichier;
 		setWindowTitle(nom_fichier + "[*]");
 	}
 	// retourne un booleen representatif de la reussite de l'enregistrement
+	// returns a booleen representative of the success of the recording
 	return(resultat_enregistrement);
 }
 
 /**
-	Methode privee gerant l'enregistrement du fichier XML. S'il n'est pas possible
-	d'ecrire dans le fichier, cette fonction affiche un message d'erreur et renvoie false.
-	Autrement, elle renvoie true.
-	@param nom_fichier Nom du fichier dans lequel l'arbre XML doit etre ecrit
-	@return true si l'enregistrement a reussi, false sinon
+	PRIVATE METHOD Manage the recording of the XML file.If it is not possible
+	To write in the file, this function displays an error message and returns false.
+	Otherwise, she returns true.
+	@param file_name file name in which the XML shaft must be written
+	@return True if the re-registrationming, FALSE SINON
 */
 bool SchemaVue::private_enregistrer(QString &n_fichier) {
 	QFile fichier(n_fichier);

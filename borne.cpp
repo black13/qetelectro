@@ -75,6 +75,7 @@ initializes a terminal
 */
 Borne::Borne(qreal pf_x, qreal pf_y,Borne::Orientation o, Element *e) 
 : QGraphicsItem(e) {
+	trace_msg("");
 	initialise(QPointF(pf_x, pf_y), o);
 }
 
@@ -82,6 +83,7 @@ Borne::Borne(qreal pf_x, qreal pf_y,Borne::Orientation o, Element *e)
 	Destructeur
 */
 Borne::~Borne() {
+	trace_msg("");
 	delete br;
 }
 
@@ -314,27 +316,29 @@ void Borne::mouseReleaseEvent(QGraphicsSceneMouseEvent *e) {
 	borne_precedente = NULL;
 	couleur_hovered  = couleur_neutre;
 	// check that the scene is indeed a Schema
-	if (Schema *s = qobject_cast<Schema *>(scene())) 	{
-	// we stop drawing the driver preview
-	s -> poseConducteur(false);
-	// we get the element under the pointer during the MouseReleaseEvent
+	if (Schema *s = qobject_cast<Schema *>(scene())) 	
+	{
+		// we stop drawing the driver preview
+		s->poseConducteur(false);
+		// we get the element under the pointer during the MouseReleaseEvent
 		QGraphicsItem *qgi = s-> itemAt(e -> scenePos(),QTransform() );
-	// if there is nothing, we stop it
-	if (!qgi) return;
-	// same if the obtained element is not a bound
-	Borne *p = qgraphicsitem_cast<Borne *>(qgi);
-	if (!p) return;
-	// we reset the hover color to its default value
-	p -> couleur_hovered = p -> couleur_neutre;
-	// same if it is the current terminal
-	if (p == this) return;
-	// same if it is a terminal of the current element and the element does not have the right to connect its own terminals
+		// if there is nothing, we stop it
+		if (!qgi) 
+			return;
+		// same if the obtained element is not a bound
+		Borne *p = qgraphicsitem_cast<Borne *>(qgi);
+		if (!p) return;
+		// we reset the hover color to its default value
+		p->couleur_hovered = p -> couleur_neutre;
+		// same if it is the current terminal
+		if (p == this) return;
+		// same if it is a terminal of the current element and the element does not have the right to connect its own terminals
 		bool cia = ((Element *)parentItem()) -> connexionsInternesAcceptees();
 		if (!cia) foreach(QGraphicsItem *item, parentItem() -> childItems()) if (item == p) return;
- // last check: check that this terminal is not already linked to the other terminal
-		foreach (Conducteur *f, liste_conducteurs) if (f ->borne1 == p || f ->borne2 == p) return;
- // otherwise, we put a conductor
-		new Conducteur(this, (Borne *)qgi);
+	// last check: check that this terminal is not already linked to the other terminal
+	foreach (Conducteur *f, liste_conducteurs) if (f ->borne1 == p || f ->borne2 == p) return;
+	// otherwise, we put a conductor
+	new Conducteur(this, (Borne *)qgi);
 	}
 }
 

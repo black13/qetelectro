@@ -31,7 +31,7 @@ PanelAppareils::PanelAppareils(QWidget *parent) :  QListWidget(parent) {
 	
 	QListWidgetItem *qlwi;
 	QString whats_this = tr("This is a aliment that you can insert  into your diagram schema by clicking and dragging");
-	QString tool_tip = tr("Click - drop this aliment on the diagram \ 351ma to insert ");
+	QString tool_tip = tr("Click - drop this aliment on the diagram schema to insert ");
 	
 	// fill the list
 	QDir dossier_elements("elements/");
