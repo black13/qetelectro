@@ -1,4 +1,5 @@
- cmake_minimum_required(VERSION 3.9)
+#"c:\Program Files\CMake\bin\cmake.exe"  -G "Visual Studio 14 2015" -D CMAKE_PREFIX_PATH="C:\Qt-2015\4.8.6\msvc2015" ..
+cmake_minimum_required(VERSION 3.9)
 
 project(qet)
 
@@ -45,6 +46,20 @@ panelappareils.cpp
 qetapp.cpp
 schema.cpp
 schemavue.cpp
+aboutqet.h
+borne.h
+conducteur.h
+contacteur.h
+debug.h
+del.h
+element.h
+elementfixe.h
+elementperso.h
+entree.h
+panelappareils.h
+qetapp.h
+schema.h
+schemavue.h
 )
 
 add_executable(qet ${SOURCES})
