@@ -19,10 +19,10 @@ Element::Element(QGraphicsItem *parent) : QGraphicsItem(parent) {
 	@param widget the widget on which we draw
 */
 void Element::paint(QPainter *painter, const QStyleOptionGraphicsItem *options, QWidget *) {
-// drawing the element itself
+	// drawing the element itself
 	paint(painter, options);
 	
-// drawing the selection frame if necessary
+	// drawing the selection frame if necessary
 	if (isSelected()) drawSelection(painter, options);
 }
 
@@ -193,16 +193,16 @@ void Element::drawSelection(QPainter *painter, const QStyleOptionGraphicsItem *)
 Initializing and drawing the Pixmap of the element.
 */
 void Element::updatePixmap() {
-// transparent pixmap making the basic size of the element
+	// transparent pixmap making the basic size of the element
 	apercu = QPixmap(dimensions);
 	apercu.fill(QColor(255, 255, 255, 0));
-// qpainter on the pixmap, with antialiasing
+	// qpainter on the pixmap, with antialiasing
 	QPainter p(&apercu);
 	p.setRenderHint(QPainter::Antialiasing, true);
 	p.setRenderHint(QPainter::SmoothPixmapTransform, true);
-// Translation of the origin of the repere of the pixmap
+	// Translation of the origin of the repere of the pixmap
 	p.translate(hotspot_coord);
-// the element draws on the pixmap
+	// the element draws on the pixmap
 	paint(&p, 0);
 }
 
@@ -224,7 +224,10 @@ void Element::setPos(const QPointF &p) {
 	// update the terminals / drivers
 	// update the terminals / drivers
 	foreach(QGraphicsItem *qgi, childItems()) {
-		if (Borne *p = qgraphicsitem_cast<Borne *>(qgi)) p -> updateConducteur();
+		if (Borne *p = qgraphicsitem_cast<Borne *>(qgi)) 
+		{
+			p->updateConducteur();
+		}
 	}
 }
 
@@ -242,7 +245,6 @@ void Element::setPos(qreal x, qreal y) {
 	Managing the mouse movements in the element, in particular
 */
 void Element::mouseMoveEvent(QGraphicsSceneMouseEvent *e) {
-
 	trace_msg("");
 	//int ret = _CrtDbgReportW(_CRT_ERROR, _CRT_WIDE(__FILE__), __LINE__, _CRT_WIDE(QT_VERSION_STR), reinterpret_cast<const wchar_t *> (QString::fromLatin1("video/").utf16()));
 	

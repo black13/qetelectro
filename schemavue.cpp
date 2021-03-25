@@ -194,8 +194,12 @@ void SchemaVue::dropEvent(QDropEvent *e) {
 	QString fichier = e -> mimeData() -> text();
 	int etat;
 	Element *el = new ElementPerso(fichier, 0, &etat);
-	if (etat != 0) delete el;
-	else {
+	if (etat != 0) 
+	{ 
+		delete el;
+	}
+	else 
+	{
 		scene -> addItem(el);
 		el -> setPos(mapToScene(e -> pos().x(), e -> pos().y()));
 		el -> setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
